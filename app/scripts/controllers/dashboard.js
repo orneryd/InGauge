@@ -86,19 +86,22 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             var states = {
                 0: 0,
                 1: 0,
-                2: 0
+                2: 0,
             };
+            var studentsConnectedCount = 0;
 
             if (results) {
                 for (var key in results) {
                     var result = results[key];
                     if (typeof states[result.state] === 'number') {
                         states[result.state]++;
+                        studentsConnectedCount++;
                     }
                 };
             }
 
             $scope.states = states;
+            $scope.studentsConnectedCount = studentsConnectedCount;
         });
     };
 
