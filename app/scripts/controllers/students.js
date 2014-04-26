@@ -28,7 +28,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         });
     });
     
-/*    $scope.testResults = [];
+//    $scope.testResults = [];
     $http.get('/api/student').success(function(students) {
         $scope.students = students;
     });
@@ -46,5 +46,5 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         $http.get('/api/student').success(function(students) {
             $scope.students = students;
         });
-    });*/
+    });
 }]);

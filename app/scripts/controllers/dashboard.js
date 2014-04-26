@@ -16,10 +16,11 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     $socket.on('newPollResult', getCurrentPoll);
 
 
-    /*    $scope.testResults = [];
+    //$scope.testResults = [];
         $http.get('/api/student').success(function(students) {
             $scope.students = students;
         });
+    /*
         $http.get('/api/testresult').success(function(results) {
             $scope.testResults = results;
         });
