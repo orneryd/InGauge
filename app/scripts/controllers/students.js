@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
-    var waiting, waiting2;
+    var resetState, resetButtons;
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
@@ -21,10 +21,11 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     var startWaiting = function(){
         $scope.disableClick = true;
-        waiting = $timeout(function(){
+        resetState = $timeout(function(){
             $scope.currentState = 0;
+            $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
         }, 3000);
-        waiting2 = $timeout(function(){
+        resetButtons = $timeout(function(){
             $scope.disableClick = false;
         }, 1000);
     };
@@ -35,10 +36,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     
     $scope.sendAction = function(state){
         if (waiting){
-            $timeout.cancel(waiting);
-            $timeout.cancel(waiting2);
+            $timeout.cancel(resetState);
+            $timeout.cancel(resetButtons);
             waiting = null;
-            waiting2 = null;
+            resetButtons = null;
         }
         $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: state }).success(function(){
             $scope.currentState = state;
