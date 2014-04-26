@@ -2,10 +2,10 @@
 
 angular.module('sweduphxApp').controller('NavbarCtrl', ["$scope", "$location", function ($scope, $location){
     $scope.menu = [{
-        'title': 'Home',
+        'title': 'Student',
         'link': '/'
     },{
-        'title': 'Dashboard',
+        'title': 'Teacher',
         'link': '/dashboard'
     }];
 
