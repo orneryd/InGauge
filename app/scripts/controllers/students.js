@@ -19,6 +19,13 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         }
       });
     };
+
+    var getCurrentAssessment = function(){
+        $http.get('/api/assessment/active').success(function(assessment) {
+            $scope.assessment = assessment;
+        });
+    };
+
     var startWaiting = function(){
         $scope.disableClick = true;
         resetState = $timeout(function(){
@@ -30,8 +37,9 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         }, 1000);
     };
     $scope.selectStudent = function(student){
-      $scope.currentStudent = student;
-      getCurrentPoll()
+        $scope.currentStudent = student;
+        getCurrentPoll()
+        getCurrentAssessment();
     };
     
     $scope.sendAction = function(state){
@@ -46,6 +54,21 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
             startWaiting();
         });
     };
+
+    $scope.assessmentAnswerSelect = function(answer_id) {
+        $scope.assessment.question.answers.forEach(function(element, index) {
+            var selectedIndex;
+
+            if (index === answer_id) {
+                element.selected = true;
+
+            } else {
+                element.selected = false;
+            }
+        });
+
+        $http.post('/api/questionResult/' + $scope.assessment.question._id, {id: answer_id});
+    };
     
     $socket.on("newPoll", function(){
         $http.get('/api/poll/active').success(function(poll) {
@@ -56,6 +79,8 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $socket.on("closePoll", function(){
         $scope.currentPoll = null;
     });
+
+    $socket.on('newAssessment', getCurrentAssessment);
     
 //    $scope.testResults = [];
     $http.get('/api/student').success(function(students) {
