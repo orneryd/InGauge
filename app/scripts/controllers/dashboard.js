@@ -20,13 +20,23 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     // Calculate how long ago started
     var timeout = null;
     var updateFromNow = function() {
+        // If called via setTimeout, have to use scope.apply so angular knows
         if ($scope.poll && $scope.poll.start) {
-            $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
+            if(!$scope.$$phase) {
+                $scope.$apply(function() {
+                    updateFromNowChange();
+                });
+            } else {
+                updateFromNowChange();
+            }
         }
 
         // Call again later
         clearTimeout(timeout);
         timeout = setTimeout(updateFromNow, 60000);
+    };
+    var updateFromNowChange = function() {
+        $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
     };
     
     $scope.startNewPoll = function(){
