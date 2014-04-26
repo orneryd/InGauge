@@ -8,6 +8,10 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null') {
                 $scope.poll = poll;
+                $scope.pollNew = {};
+
+            } else {
+                $scope.poll = null;
             }
         });
     };
