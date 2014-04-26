@@ -10,4 +10,11 @@
 	  <button ng-click="selectStudent(student)" class="btn btn-info" style="display: block; margin-bottom: 10px;" ng-repeat="student in students">{{student.name}}</button>
 	</div>
 </div>
-	<div>{{currentStudent.name}}</div>
+<div ng-show="currentStudent">
+    <div>{{currentStudent.name}}</div>
+    <div>{{currentPoll.title}}</div>
+    
+    <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction('I am Bored!')">Speed Up</button>
+    <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction('WTF is this?!')">Slow Down</button>
+    <div class="current-state">{{currentState}}</div>
+</div>
