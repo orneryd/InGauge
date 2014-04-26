@@ -3,11 +3,22 @@
 angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
     $scope.poll;
     $scope.pollNew = {};
+
+    var initialize = function() {
+
+        // Set socket events
+        $socket.on('newPollAction', getCurrentPoll);
+        $socket.on('newPoll', getCurrentPoll);
+        $socket.on('closePoll', getCurrentPoll);
+
+        getCurrentPoll();
+    };
+
+    // Get the current active poll from the server
     $scope.questionMode = false;
-    
     var getCurrentPoll = function(){
         $http.get('/api/poll/active').success(function(poll) {
-            if (poll !== 'null') {
+            if (poll !== 'null' && poll) {
                 $scope.poll = poll;
                 $scope.pollNew = {};
                 updateFromNow();
@@ -31,24 +42,23 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         timeout = $timeout(updateFromNow, 60000);
     };
     
+    // Create a new poll
     $scope.startNewPoll = function(){
         $http.post('/api/poll', { title: $scope.pollNew.title }).success(getCurrentPoll);
     };
 
+    // End the current poll
     $scope.endPoll = function(){
         $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
     };
-
-    getCurrentPoll();
     
-    $socket.on('newPollAction', getCurrentPoll);
+    initialize();
 
-
-    //$scope.testResults = [];
+    /*
+    $scope.testResults = [];
         $http.get('/api/student').success(function(students) {
             $scope.students = students;
         });
-    /*
         $http.get('/api/testresult').success(function(results) {
             $scope.testResults = results;
         });
