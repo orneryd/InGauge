@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
+angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
     $scope.poll;
     $scope.pollNew = {};
-
+    $scope.questionMode = false;
+    
     var getCurrentPoll = function(){
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null') {
@@ -22,21 +23,12 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     var updateFromNow = function() {
         // If called via setTimeout, have to use scope.apply so angular knows
         if ($scope.poll && $scope.poll.start) {
-            if(!$scope.$$phase) {
-                $scope.$apply(function() {
-                    updateFromNowChange();
-                });
-            } else {
-                updateFromNowChange();
-            }
+            $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
         }
 
         // Call again later
-        clearTimeout(timeout);
-        timeout = setTimeout(updateFromNow, 60000);
-    };
-    var updateFromNowChange = function() {
-        $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
+        $timeout.cancel(timeout);
+        timeout = $timeout(updateFromNow, 60000);
     };
     
     $scope.startNewPoll = function(){

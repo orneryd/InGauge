@@ -1,19 +1,19 @@
 <div ng-include="'partials/navbar'"></div>
+<div ng-hide="questionMode" >
+    <div class="poll-new" ng-hide="poll">
+        <h2>Create a New Poll</h2>
+        <label>Title</label>
+        <input ng-model="pollNew.title" />
+        <button class="btn btn-info" ng-click="startNewPoll()">Start</button>
+    </div>
 
-<div class="poll-new" ng-hide="poll">
-
-    <h2>Create a New Poll</h2>
-    <label>Title</label>
-    <input ng-model="pollNew.title" />
-    <button class="btn btn-info" ng-click="startNewPoll()">Start</button>
+    <div class="poll-existing" ng-show="poll">
+        <h2>Active Poll</h2>
+        <h3>{{ poll.title }}</h3>
+        <h4>Started: {{ poll.momentFromNow }}</h4>
+        <h4>number of actions: {{ poll.actions.length }}</h4>
+        <button class="btn btn-danger" ng-click="endPoll()">End</button>
+    </div>  
 </div>
-
-<div class="poll-existing" ng-show="poll">
-
-    <h2>Active Poll</h2>
-    <h3>{{ poll.title }}</h3>
-    <h4>Started: {{ poll.momentFromNow }}</h4>
-    <h4>number of actions: {{ poll.actions.length }}</h4>
-    <button class="btn btn-danger" ng-click="endPoll()">End</button>
-
+<div ng-show="questionMode" ng-include="partials/question-mode-teacher.html">
 </div>
