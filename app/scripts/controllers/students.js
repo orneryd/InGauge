@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
-    var waiting;
+    var waiting, waiting2;
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
@@ -15,10 +15,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     var startWaiting = function(){
         $scope.disableClick = true;
-        $timeout(function(){
+        waiting = $timeout(function(){
             $scope.currentState = "cruise control.";
         }, 3000)
-        $timeout(function(){
+        waiting2 = $timeout(function(){
             $scope.disableClick = false;
         }, 1000)
     };
@@ -30,11 +30,13 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.sendAction = function(state){
         if (waiting){
             clearTimeout(waiting);
+            clearTimeout(waiting2);
             waiting = null;
+            waiting2 = null;
         }
         $http.post('/api/action/' + $scope.currentPoll._id).success(function(){
             $scope.currentState = state;
-            waiting = startWaiting();
+            startWaiting();
         });
     };
     
