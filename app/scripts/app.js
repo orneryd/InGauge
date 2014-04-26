@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('glassterSpaApp', [
+angular.module('sweduphxApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -12,16 +12,12 @@ angular.module('glassterSpaApp', [
 .config(function ($routeProvider, $locationProvider){
     $routeProvider
         .when('/', {
-            templateUrl: 'partials/main',
-            controller: 'MainCtrl'
+            templateUrl: 'partials/students',
+            controller: 'StudentsCtrl'
         })
         .when('/dashboard', {
             templateUrl: 'partials/dashboard',
             controller: 'DashboardCtrl'
-        })
-        .when('/students', {
-            templateUrl: 'partials/students',
-            controller: 'StudentsCtrl'
         })
         .otherwise({
             redirectTo: '/'

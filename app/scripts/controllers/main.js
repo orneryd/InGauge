@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('glassterSpaApp').controller('MainCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
-    $http.get('/api/question').success(function(questions) {
+angular.module('sweduphxApp').controller('MainCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
+/*    $http.get('/api/question').success(function(questions) {
         $scope.questions = questions;
     });
     $socket.on('newQuestion', function(){
@@ -73,5 +73,5 @@ angular.module('glassterSpaApp').controller('MainCtrl', ["$scope", "$http", "$so
                 answers: []
             };
         });
-    };
+    };*/
 }]);
