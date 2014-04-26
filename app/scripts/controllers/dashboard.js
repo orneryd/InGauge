@@ -8,12 +8,20 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null') {
                 $scope.poll = poll;
+                $scope.pollNew = {};
+
+            } else {
+                $scope.poll = null;
             }
         });
     };
     
     $scope.startNewPoll = function(){
-        $http.post('/api/poll', { pollStart: moment(), title: $scope.pollNew.title }).success(getCurrentPoll);
+        $http.post('/api/poll', { title: $scope.pollNew.title }).success(getCurrentPoll);
+    };
+
+    $scope.endPoll = function(){
+        $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
     };
 
     getCurrentPoll();
