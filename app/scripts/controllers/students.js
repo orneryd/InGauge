@@ -6,19 +6,23 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     
     $scope.currentPoll = null;
     
-    $scope.currentState = "cruise control...";
+    // cruise control
+    // 1 = slow down
+    // 2 = speed up
+    $scope.currentState = 0;
 
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
-          $scope.currentPoll = poll;
+            $scope.currentPoll = poll;
+            $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
         }
       });
     };
     var startWaiting = function(){
         $scope.disableClick = true;
         waiting = $timeout(function(){
-            $scope.currentState = "cruise control...";
+            $scope.currentState = 0;
         }, 3000);
         waiting2 = $timeout(function(){
             $scope.disableClick = false;
