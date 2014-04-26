@@ -12,9 +12,10 @@
         <h3>{{ poll.title }}</h3>
         <h4>Started: {{ poll.momentFromNow }}</h4>
         <h4>States:</h4>
-        <ul ng-repeat="(state, count) in states">
-            <li>{{ state }}: {{ count }}</li>
-        </ul>
+        <div class="states">
+            <span style="color: green;" ng-style="{opacity: states[1] / studentsConnectedCount}">{{ 100 * states[1] / studentsConnectedCount }}%</span>
+            <span style="color: red;" ng-style="{opacity: states[2] / studentsConnectedCount}">{{ 100 * states[2] / studentsConnectedCount }}%</span>
+        </div>
         <button class="btn btn-danger" ng-click="endPoll()">End</button>
     </div>  
 </div>
