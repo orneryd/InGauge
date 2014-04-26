@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
+angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+    var waiting;
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
@@ -8,14 +9,33 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
-          $scope.poll = poll;
+          $scope.currentPoll = poll;
         }
       });
     };
-
+    var startWaiting = function(){
+        $scope.disableClick = true;
+        $timeout(function(){
+            $scope.currentState = "cruise control.";
+        }, 3000)
+        $timeout(function(){
+            $scope.disableClick = false;
+        }, 1000)
+    };
     $scope.selectStudent = function(student){
       $scope.currentStudent = student;
       getCurrentPoll()
+    };
+    
+    $scope.sendAction = function(state){
+        if (waiting){
+            clearTimeout(waiting);
+            waiting = null;
+        }
+        $http.post('/api/action/' + $scope.currentPoll._id).success(function(){
+            $scope.currentState = state;
+            waiting = startWaiting();
+        });
     };
     
     $scope.currentPollResult = {

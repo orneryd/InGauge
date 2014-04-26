@@ -13,6 +13,7 @@
     <h2>Active Poll</h2>
     <h3>{{ poll.title }}</h3>
     <h4>Started: {{ poll.momentFromNow }}</h4>
+    <h4>number of actions: {{ poll.actions.length }}</h4>
     <button class="btn btn-danger" ng-click="endPoll()">End</button>
 
 </div>
