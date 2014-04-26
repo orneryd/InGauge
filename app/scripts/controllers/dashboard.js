@@ -4,6 +4,12 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     $scope.poll;
     $scope.pollNew = {};
 
+    // modes:
+    // pollingMode = 0;
+    // assesmentMode = 1;
+    // resultsMode = 2;
+    $scope.mode = 0;
+    
     var initialize = function() {
 
         // Set socket events
@@ -30,10 +36,38 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
 
         getCurrentPoll();
         getCurrentPollResults();
+        
+        $http.get('/api/question').success(function(questions) {
+            $scope.questions = questions;
+        });
     };
 
     // Get the current active poll from the server
-    $scope.questionMode = false;
+
+    
+    $scope.startQuestionMode = function(){
+        $scope.mode = 1;
+    };
+    
+    $scope.stopQuestionMode = function(){
+        $scope.mode = 0;
+    };
+    
+    $scope.selectQuestion = function(q){
+        // console.log("show", arguments, this);
+        if ($scope.lastSelected) {
+            $scope.lastSelected.selected = null;
+        }
+        q.selected = true;
+        $scope.lastSelected = q;
+    };
+    
+    $scope.pushQuestion = function(question){
+        $http.post('/api/assessment', { question: question }).success(function(){
+            $scope.mode = 2;
+        });
+    };
+    
     var getCurrentPoll = function(){
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null' && poll) {
@@ -90,6 +124,8 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     $scope.endPoll = function(){
         $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
     };
+    
+    
     
     initialize();
 
