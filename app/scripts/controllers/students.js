@@ -34,8 +34,8 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     
     $scope.sendAction = function(state){
         if (waiting){
-            clearTimeout(waiting);
-            clearTimeout(waiting2);
+            $timeout.cancel(waiting);
+            $timeout.cancel(waiting2);
             waiting = null;
             waiting2 = null;
         }
@@ -53,10 +53,14 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         }
     });
     
-    $socket.on("newPoll", function(pollId){
-        $http.get('/api/poll/' + pollId).success(function(poll) {
+    $socket.on("newPoll", function(){
+        $http.get('/api/poll/active').success(function(poll) {
             $scope.currentPoll = poll;
         });
+    });
+    
+    $socket.on("closePoll", function(){
+        $scope.currentPoll = null;
     });
     
 //    $scope.testResults = [];
