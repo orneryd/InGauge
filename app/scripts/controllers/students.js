@@ -11,6 +11,8 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         },
         state: null
     };
+    $scope.currentState = "cruise control...";
+
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
@@ -21,7 +23,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     var startWaiting = function(){
         $scope.disableClick = true;
         waiting = $timeout(function(){
-            $scope.currentState = "cruise control.";
+            $scope.currentState = "cruise control...";
         }, 3000);
         waiting2 = $timeout(function(){
             $scope.disableClick = false;

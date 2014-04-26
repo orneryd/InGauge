@@ -7,6 +7,9 @@ angular.module('sweduphxApp').controller('NavbarCtrl', ["$scope", "$location", f
     },{
         'title': 'Teacher',
         'link': '/dashboard'
+    },{
+        'title': 'Reports',
+        'link': '/reports'
     }];
 
     $scope.isActive = function(route){
