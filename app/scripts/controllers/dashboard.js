@@ -3,17 +3,30 @@
 angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
     $scope.poll;
     $scope.pollNew = {};
-    
+
     var getCurrentPoll = function(){
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null') {
                 $scope.poll = poll;
                 $scope.pollNew = {};
+                updateFromNow();
 
             } else {
                 $scope.poll = null;
             }
         });
+    };
+
+    // Calculate how long ago started
+    var timeout = null;
+    var updateFromNow = function() {
+        if ($scope.poll && $scope.poll.start) {
+            $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
+        }
+
+        // Call again later
+        clearTimeout(timeout);
+        timeout = setTimeout(updateFromNow, 60000);
     };
     
     $scope.startNewPoll = function(){
@@ -26,7 +39,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
 
     getCurrentPoll();
     
-    $socket.on('newPollResult', getCurrentPoll);
+    $socket.on('newPollAction', getCurrentPoll);
 
 
     //$scope.testResults = [];
