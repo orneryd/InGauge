@@ -14,10 +14,12 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         state: null
     };
     
-    $scope.$watch("currentPollResult.state", function(){
-        $http.post('/api/pollResult/' + $scope.currentPoll._id, $scope.currentPollResult).success(function() {
-            // do nothing?
-        });
+    $scope.$watch("currentPollResult.state", function(wut){
+        if ($scope.currentPoll) {
+            $http.post('/api/pollResult/' + $scope.currentPoll._id, $scope.currentPollResult).success(function() {
+                // do nothing?
+            });
+        }
     });
     
     $socket.on("newPoll", function(pollId){
