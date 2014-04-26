@@ -11,6 +11,23 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $socket.on('newPoll', getCurrentPoll);
         $socket.on('closePoll', getCurrentPoll);
 
+        $scope.$watch('poll', function() {
+            // Count all distinct action states
+            if ($scope.poll && $scope.poll.actions) {
+                var states = {};
+                
+                $scope.poll.actions.forEach(function(element) {
+                    if (!states[element.state]) {
+                        states[element.state] = 0;
+                    }
+
+                    states[element.state]++;
+                });
+
+                $scope.poll.actions.states = states;
+            }
+        });
+
         getCurrentPoll();
     };
 
