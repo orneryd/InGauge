@@ -1,0 +1,52 @@
+<div ng-include="'partials/navbar'"></div>
+<h4>Test Results</h4>
+<div class="row marketing">
+    <h4>In Progress</h4>
+    <accordion close-others="true">
+        <accordion-group ng-repeat="s in students" ng-show="hasTestsInProgress(s.name)">
+            <accordion-heading>
+                {{s.name}} - {{testResultsInProgressFor(s.name).length}}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+            </accordion-heading>
+            <accordion close-others="true">
+                <accordion-group ng-repeat="result in testResultsInProgressFor(s.name)">
+                    <accordion-heading>
+                        {{result.testName}} - {{percentCorrect(result)}}%<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                    </accordion-heading>
+                    <accordion close-others="true">
+                        <accordion-group ng-repeat="qr in result.questionResults">
+                            <accordion-heading>
+                                {{qr.text}}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                            </accordion-heading>
+                            <p>{{qr.givenAnswer.correct ? "Correct" : "Incorrect"}} - {{qr.givenAnswer.text}}</p>
+                        </accordion-group>
+                    </accordion>
+                </accordion-group>
+            </accordion>
+        </accordion-group>
+    </accordion>
+</div>
+<div class="row marketing">
+    <h4>Completed</h4>
+    <accordion close-others="true">
+        <accordion-group ng-repeat="s in students">
+            <accordion-heading>
+                {{s.name}} - {{testResultsFor(s.name).length}}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+            </accordion-heading>
+            <accordion close-others="true">
+                <accordion-group ng-repeat="result in testResultsFor(s.name)">
+                    <accordion-heading>
+                        {{result.testName}} - {{percentCorrect(result)}}%<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                    </accordion-heading>
+                    <accordion close-others="true">
+                        <accordion-group ng-repeat="qr in result.questionResults">
+                            <accordion-heading>
+                                {{qr.text}}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                            </accordion-heading>
+                            <p>{{qr.givenAnswer.correct ? "Correct" : "Incorrect"}} - {{qr.givenAnswer.text}}</p>
+                        </accordion-group>
+                    </accordion>
+                </accordion-group>
+            </accordion>
+        </accordion-group>
+    </accordion>
+</div>

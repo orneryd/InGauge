@@ -1,0 +1,32 @@
+<div ng-include="'partials/navbar'"></div>
+<form class="form-group">
+    <div class="form-group">
+        <input type="text" value="" class="test-name-dropdown" ui-select2="testDropdownOptions" ng-model="newQuestion.test">
+        </input>
+        <input class="form-control" placeholder="Question Text" ng-model="newQuestion.text">
+    </div>
+    <div ng-show="newQuestion.multiChoice">
+        <div class="form-group" ng-repeat="a in newQuestion.answers">
+            <input class="form-inline" placeholder="Answer Text" ng-model="a.text">
+        <span>
+            <input type="checkbox" class="form-inline" placeholder="Answer Text" ng-model="a.correct"> Correct answer?
+        </span>
+        </div>
+    </div>
+</form>
+<div class="form-group">
+    <button class="btn btn-sm btn-info" ng-click="addAnswer()"> +1 answer</button>
+    <button class="btn btn-sm btn-success" ng-click="postQuestion()">Add the question</button>
+</div>
+
+<div class="row marketing">
+    <h4>Latest questions added:</h4>
+
+    <div ng-repeat="q in questions">
+        <h4>{{q.testName}}</h4>
+        <h5>{{q.text}}</h5>
+        <ul class="form-group" ng-repeat="a in q.answers">
+            <li>{{a.text}}&nbsp;&nbsp;&nbsp;<span>{{a.correct}}</span></li>
+        </ul>
+    </div>
+</div>

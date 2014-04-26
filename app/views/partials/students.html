@@ -1,0 +1,11 @@
+<div ng-include="'partials/navbar'"></div>
+<h4>Students</h4>
+<div class="form-group">
+    <input class="form-control" placeholder="New student name" ng-model="newStudent.name">
+    <button style="margin-top: 10px;" class="btn btn-sm btn-success" ng-click="addStudent()">Add student</button>
+</div>
+<div class="row marketing">
+    <ul>
+        <li ng-repeat="student in students">{{student.name}}</li>
+    </ul>
+</div>
