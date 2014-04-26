@@ -28,9 +28,14 @@
     </table>
 </div>
 <div ng-show="mode === 2">
-    <!-- TODO: results go here-->
+    <div ng-show="assessmentResults">
+        <!-- TODO: results go here-->
+    </div>
+    <div ng-hide="assessmentResults">
+        Waiting for Results
+    </div>
 </div>
 <div class="row marketing">
     <button class="btn btn-large btn-info pull-left" ng-click="startQuestionMode()">Assesment</button>
-    <button class="btn btn-large btn-info pull-right" ng-click="stopQuestionMode()">Return</button>
+    <button class="btn btn-large btn-info pull-right" ng-click="returnToPolling()">Return</button>
 </div>
