@@ -2,6 +2,7 @@
 
 angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
     $scope.poll;
+    $scope.assessmentResults;
     $scope.pollNew = {};
 
     // modes:
@@ -16,6 +17,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $socket.on('newPollAction', getCurrentPollResults);
         $socket.on('newPoll', getCurrentPoll);
         $socket.on('closePoll', getCurrentPoll);
+        $socket.on('newQuestionResult', getCurrentAssessmentResults);
 
         $scope.$watch('poll', function() {
             // Count all distinct action states
@@ -49,8 +51,15 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $scope.mode = 1;
     };
     
-    $scope.stopQuestionMode = function(){
-        $scope.mode = 0;
+    $scope.returnToPolling = function(){
+        if ($scope.assessmentResults){
+            $http.put('/api/assessment/' + $scope.assessmentResults._id).success(function(){
+                $scope.mode = 0;
+                $scope.assessmentResults = null;
+            });
+        } else {
+            $scope.mode = 0;
+        }
     };
     
     $scope.selectQuestion = function(q){
@@ -67,7 +76,6 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             $scope.mode = 2;
         });
     };
-    
     var getCurrentPoll = function(){
         $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null' && poll) {
@@ -80,13 +88,18 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             }
         });
     };
+    var getCurrentAssessmentResults = function(){
+        $http.get('/api/assessment/active/results').success(function(results) {
+            $scope.assessmentResults = results;
+        });
+    };
 
     var getCurrentPollResults = function() {
         $http.get('api/poll/active/results').success(function(results) {
             var states = {
                 0: 0,
                 1: 0,
-                2: 0,
+                2: 0
             };
             var studentsConnectedCount = 0;
 
@@ -127,8 +140,6 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     $scope.endPoll = function(){
         $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
     };
-    
-    
     
     initialize();
 
