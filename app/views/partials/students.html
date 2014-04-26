@@ -11,10 +11,17 @@
 	</div>
 </div>
 <div ng-show="currentStudent">
-    <div>{{currentStudent.name}}</div>
-    <div>{{currentPoll.title}}</div>
+    <div ng-hide="currentPoll">
+        Waiting for teacher to start.
+    </div>
+    <div ng-show="currentPoll">
+        <div>{{currentStudent.name}}</div>
+        <div>{{currentPoll.title}}</div>
+
+        <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction('WTF is this?!')">Slow Down</button>
+        <div class="current-state">{{currentState}}</div>
+        <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction('I am Bored!')">Speed Up</button>
+
+    </div>
     
-    <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction('I am Bored!')">Speed Up</button>
-    <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction('WTF is this?!')">Slow Down</button>
-    <div class="current-state">{{currentState}}</div>
 </div>

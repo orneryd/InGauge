@@ -1,10 +1,17 @@
 'use strict';
 
 angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
-    var waiting;
+    var waiting, waiting2;
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
+    $scope.currentPoll = {
+        student: {
+            name: null
+        },
+        state: null
+    };
+    $scope.currentState = "cruise control...";
 
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
@@ -15,12 +22,12 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     var startWaiting = function(){
         $scope.disableClick = true;
-        $timeout(function(){
-            $scope.currentState = "cruise control.";
-        }, 3000)
-        $timeout(function(){
+        waiting = $timeout(function(){
+            $scope.currentState = "cruise control...";
+        }, 3000);
+        waiting2 = $timeout(function(){
             $scope.disableClick = false;
-        }, 1000)
+        }, 1000);
     };
     $scope.selectStudent = function(student){
       $scope.currentStudent = student;
@@ -29,34 +36,33 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     
     $scope.sendAction = function(state){
         if (waiting){
-            clearTimeout(waiting);
+            $timeout.cancel(waiting);
+            $timeout.cancel(waiting2);
             waiting = null;
+            waiting2 = null;
         }
         $http.post('/api/action/' + $scope.currentPoll._id).success(function(){
             $scope.currentState = state;
-            waiting = startWaiting();
+            startWaiting();
         });
-    };
-    
-    $scope.currentPollResult = {
-        student: {
-            name: null
-        },
-        state: null
     };
     
     $scope.$watch("currentPollResult.state", function(wut){
         if ($scope.currentPoll) {
-            $http.post('/api/pollResult/' + $scope.currentPoll._id, $scope.currentPollResult).success(function() {
+            $http.post('/api/pollResult/' + $scope.currentPoll._id, {student: $scope.currentStudent, state: wut}).success(function() {
                 // do nothing?
             });
         }
     });
     
-    $socket.on("newPoll", function(pollId){
-        $http.get('/api/poll/' + pollId).success(function(poll) {
+    $socket.on("newPoll", function(){
+        $http.get('/api/poll/active').success(function(poll) {
             $scope.currentPoll = poll;
         });
+    });
+    
+    $socket.on("closePoll", function(){
+        $scope.currentPoll = null;
     });
     
 //    $scope.testResults = [];
