@@ -13,7 +13,11 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     };
     
     $scope.startNewPoll = function(){
-        $http.post('/api/poll', { pollStart: moment(), title: $scope.pollNew.title }).success(getCurrentPoll);
+        $http.post('/api/poll', { title: $scope.pollNew.title }).success(getCurrentPoll);
+    };
+
+    $scope.endPoll = function(){
+        $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
     };
 
     getCurrentPoll();
