@@ -35,10 +35,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     
     $scope.sendAction = function(state){
-        if (waiting){
+        if (resetState){
             $timeout.cancel(resetState);
             $timeout.cancel(resetButtons);
-            waiting = null;
+            resetState = null;
             resetButtons = null;
         }
         $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: state }).success(function(){

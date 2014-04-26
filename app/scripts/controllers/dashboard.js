@@ -7,7 +7,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     var initialize = function() {
 
         // Set socket events
-        $socket.on('newPollAction', getCurrentPoll);
+        $socket.on('newPollAction', getCurrentPollResults);
         $socket.on('newPoll', getCurrentPoll);
         $socket.on('closePoll', getCurrentPoll);
 
@@ -29,6 +29,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         });
 
         getCurrentPoll();
+        getCurrentPollResults();
     };
 
     // Get the current active poll from the server
@@ -43,6 +44,27 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             } else {
                 $scope.poll = null;
             }
+        });
+    };
+
+    var getCurrentPollResults = function() {
+        $http.get('api/poll/active/results').success(function(results) {
+            var states = {
+                0: 0,
+                1: 0,
+                2: 0
+            };
+
+            if (results) {
+                for (var key in results) {
+                    var result = results[key];
+                    if (typeof states[result.state] === 'number') {
+                        states[result.state]++;
+                    }
+                };
+            }
+
+            $scope.states = states;
         });
     };
 
