@@ -5,7 +5,12 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
-
+    $scope.currentPoll = {
+        student: {
+            name: null
+        },
+        state: null
+    };
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
@@ -17,10 +22,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         $scope.disableClick = true;
         waiting = $timeout(function(){
             $scope.currentState = "cruise control.";
-        }, 3000)
+        }, 3000);
         waiting2 = $timeout(function(){
             $scope.disableClick = false;
-        }, 1000)
+        }, 1000);
     };
     $scope.selectStudent = function(student){
       $scope.currentStudent = student;
@@ -40,16 +45,9 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         });
     };
     
-    $scope.currentPollResult = {
-        student: {
-            name: null
-        },
-        state: null
-    };
-    
     $scope.$watch("currentPollResult.state", function(wut){
         if ($scope.currentPoll) {
-            $http.post('/api/pollResult/' + $scope.currentPoll._id, $scope.currentPollResult).success(function() {
+            $http.post('/api/pollResult/' + $scope.currentPoll._id, {student: $scope.currentStudent, state: wut}).success(function() {
                 // do nothing?
             });
         }
