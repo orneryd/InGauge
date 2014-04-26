@@ -5,12 +5,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
-    $scope.currentPoll = {
-        student: {
-            name: null
-        },
-        state: null
-    };
+    
     $scope.currentState = "cruise control...";
 
     var getCurrentPoll = function(){
@@ -41,19 +36,11 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
             waiting = null;
             waiting2 = null;
         }
-        $http.post('/api/action/' + $scope.currentPoll._id).success(function(){
+        $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: state }).success(function(){
             $scope.currentState = state;
             startWaiting();
         });
     };
-    
-    $scope.$watch("currentPollResult.state", function(wut){
-        if ($scope.currentPoll) {
-            $http.post('/api/pollResult/' + $scope.currentPoll._id, {student: $scope.currentStudent, state: wut}).success(function() {
-                // do nothing?
-            });
-        }
-    });
     
     $socket.on("newPoll", function(){
         $http.get('/api/poll/active').success(function(poll) {
