@@ -10,6 +10,7 @@ SWEDUPHX
  5. Run `bower install`
  6. Install grunt with `npm install grunt -g`
  7. Replace the contents of `app/bower_components/angular-ui/.bower.json` with the following:
+
     {
     "name": "angular-ui",
     "homepage": "https://github.com/angular-ui/angular-ui",
@@ -26,7 +27,9 @@ SWEDUPHX
     "_originalSource": "angular-ui",
     "_direct": true
     }
+
  8. Replate the contents of `app/bower_components/socket.io-client/.bower.json` with the following:
+
     {
     "name": "socket.io-client",
     "homepage": "https://github.com/LearnBoost/socket.io-client",
@@ -43,6 +46,7 @@ SWEDUPHX
     "_originalSource": "socket.io-client",
     "_direct": true
     } 
+
  9. Start mongodb with `mongod`
     If this doesn't work, be sure to `sudo mkdir -p /data/db
  10. Start a development server by running `grunt serve`
