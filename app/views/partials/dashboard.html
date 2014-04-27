@@ -13,8 +13,8 @@
         <h4>Started: {{ poll.momentFromNow }}</h4>
         <h4>States:</h4>
         <div class="states">
-            <span style="color: green;" ng-style="{opacity: states[1]}">{{ 100 * states[1] }}%</span>
-            <span style="color: red;" ng-style="{opacity: states[2]}">{{ 100 * states[2] }}%</span>
+          <span style="color: red;" ng-style="{opacity: states[2]}">{{ 100 * states[2] }}%</span>
+          <span style="color: green;" ng-style="{opacity: states[1]}">{{ 100 * states[1] }}%</span>
         </div>
         <button class="btn btn-danger" ng-click="endPoll()">End</button>
     </div>  
