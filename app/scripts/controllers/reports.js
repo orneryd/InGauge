@@ -228,7 +228,7 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 
         for (i = -19; i <= 0; i++) {
             data.push({
-                x: time + i * 1000,
+                x: time + i * 5000,
                 y: 0
             });
         }
@@ -425,8 +425,12 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
     initChart3();
 
     var getCurrentPoll = function() {
-        $http.get("/api/poll").success(function(results){
-            $scope.polls = results;
+        $http.get("/api/poll/active").success(function(poll){
+            if (!poll || poll === 'null') {
+                $scope.pollResultsCounts = [0, 0, 0];
+            } else {
+                getCurrentPollResults();
+            }
         });
     };
 
@@ -446,10 +450,15 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 
     var pollResultToPercent = function(counts, index) {
         var total = counts[0] + counts[1] + counts[2];
-        return Math.round(100 * counts[index] / total);
+        if (!total) {
+            return 0;
+        } else {
+            return Math.round(100 * counts[index] / total);
+        }
     };
 
     $socket.on('newPoll', getCurrentPoll);
+    $socket.on('closePoll', getCurrentPoll);
     $socket.on('newPollAction', getCurrentPollResults);
 
     getCurrentPoll();
