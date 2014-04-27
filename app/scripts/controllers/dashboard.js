@@ -90,18 +90,24 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             $scope.assessment = assessment;
         });
     };
-    
+
     $scope.feedbackResults;
     
     $scope.startFeedback = function(){
-        $http.post('/api/feedback').success(function(feedback){
-            $scope.mode = 2;
-            $scope.feedback = feedback;
+        $http.get('/api/feedback/active').success(function(feedback) {
+            if (feedback !== 'null' && feedback) {
+                $scope.mode = 3;
+            } else {
+                $http.post('/api/feedback').success(function(feedback){
+                    $scope.mode = 3;
+                    $scope.feedback = feedback;
+                });
+            }
         });
     };
     
     $scope.endFeedback = function(){
-        $http.put('/api/feedback').success(function(){
+        $http.put('/api/feedback/' + $scope.feedback._id).success(function(){
             $scope.mode = 0;
         });
     };
