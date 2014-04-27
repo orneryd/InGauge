@@ -1,6 +1,9 @@
 'use strict';
 
 angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+
+    $scope.pollResultsSum = 0;
+
     var applyTheme = function(){
         /**
          * Dark theme for Highcharts JS
@@ -345,7 +348,7 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                                 var series = this.series[0];
                                 setInterval(function() {
                                     var x = (new Date()).getTime(), // current time
-                                        y = Math.random();
+                                        y = $scope.pollResultsSum;
                                     series.addPoint([x, y], true, true);
                                 }, 1000);
                             }
@@ -392,7 +395,7 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                             for (i = -19; i <= 0; i++) {
                                 data.push({
                                     x: time + i * 1000,
-                                    y: Math.random()
+                                    y: 0
                                 });
                             }
                             return data;
@@ -408,10 +411,40 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
     initChart();
     initChart2();
     initChart3();
+
+    var getCurrentPoll = function() {
+        $http.get("/api/poll").success(function(results){
+            $scope.polls = results;
+        });
+    };
+
+    var getCurrentPollResults = function() {
+        $http.get('api/poll/active/results').success(function(results) {
+
+            // Update the data for the first chart
+
+            var sum = 0;
+            for (var key in results) {
+                var result = results[key];
+                var state = 0;
+                if (result.state === 2) {
+                    state = -1;
+                }
+
+                sum = sum + state;
+            }
+
+            $scope.pollResultsSum = sum;
+        });
+    };
+
+    $socket.on('newPoll', getCurrentPoll);
+    $socket.on('newPollAction', getCurrentPollResults);
+
+    getCurrentPoll();
+    getCurrentPollResults();
+
     $http.get("/api/assessment").success(function(results){
         $scope.assessments = results;
-    });
-    $http.get("/api/poll").success(function(results){
-        $scope.polls = results;
     });
 }]);
