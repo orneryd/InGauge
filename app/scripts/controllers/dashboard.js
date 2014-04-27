@@ -53,7 +53,6 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     
     $scope.returnToPolling = function(){
         if ($scope.mode === 2){
-            debugger;
             $http.put('/api/assessment/' + $scope.assessmentId).success(function(){
                 $scope.mode = 0;
                 $scope.assessmentResults = null;
