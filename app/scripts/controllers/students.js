@@ -49,10 +49,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         resetState = $timeout(function(){
             $scope.currentState = 0;
             $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
-        }, 3000);
+        }, 60000);
         resetButtons = $timeout(function(){
             $scope.disableClick = false;
-        }, 1000);
+        }, 10000);
     };
     $scope.selectStudent = function(student){
         $scope.currentStudent = student;

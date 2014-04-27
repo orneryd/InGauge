@@ -25,6 +25,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $socket.on('newPoll', getCurrentPoll);
         $socket.on('closePoll', getCurrentPoll);
         $socket.on('newQuestionResult', getCurrentAssessmentResults);
+        $socket.on('newFeedbackResult', getCurrentFeedbackResults);
 
         $scope.$watch('poll', function() {
             // Count all distinct action states
@@ -89,6 +90,28 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             $scope.assessment = assessment;
         });
     };
+    
+    $scope.feedbackResults;
+    
+    $scope.startFeedback = function(){
+        $http.post('/api/feedback').success(function(feedback){
+            $scope.mode = 2;
+            $scope.feedback = feedback;
+        });
+    };
+    
+    $scope.endFeedback = function(){
+        $http.put('/api/feedback').success(function(){
+            $scope.mode = 0;
+        });
+    };
+
+    var getCurrentFeedbackResults = function(){
+        $http.get('/api/feedback/active/results').success(function(results) {
+            $scope.feedbackResults = results;
+        });
+    };
+    
     var getCurrentPoll = function(){
         return $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null' && poll) {
