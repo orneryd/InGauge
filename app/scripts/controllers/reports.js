@@ -2,7 +2,7 @@
 
 angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
 
-    $scope.pollResultsSum = 0;
+    $scope.pollResultsCounts = [0, 0, 0];
 
     var applyTheme = function(){
         /**
@@ -219,6 +219,23 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
     };
+
+    var generateZeroData = function() {
+        // generate an array of random data
+        var data = [],
+            time = (new Date()).getTime(),
+            i;
+
+        for (i = -19; i <= 0; i++) {
+            data.push({
+                x: time + i * 1000,
+                y: 0
+            });
+        }
+
+        return data;
+    };
+
     var initChart = function(){
         $(function () {
             $('#container').highcharts({
@@ -338,18 +355,20 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 
                 $('#container3').highcharts({
                     chart: {
-                        type: 'spline',
+                        type: 'area',
                         animation: Highcharts.svg, // don't animate in old IE
                         marginRight: 10,
                         events: {
                             load: function() {
 
                                 // set up the updating of the chart each second
-                                var series = this.series[0];
+                                var series = this.series;
                                 setInterval(function() {
-                                    var x = (new Date()).getTime(), // current time
-                                        y = $scope.pollResultsSum;
-                                    series.addPoint([x, y], true, true);
+                                    var time = (new Date()).getTime(); // current time
+
+                                    series[0].addPoint([time, $scope.pollResultsCounts[0]], true, true);
+                                    series[1].addPoint([time, $scope.pollResultsCounts[1]], true, true);
+                                    series[2].addPoint([time, $scope.pollResultsCounts[2]], true, true);
                                 }, 1000);
                             }
                         }
@@ -385,21 +404,14 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                         enabled: false
                     },
                     series: [{
-                        name: 'Live student performance data',
-                        data: (function() {
-                            // generate an array of random data
-                            var data = [],
-                                time = (new Date()).getTime(),
-                                i;
-
-                            for (i = -19; i <= 0; i++) {
-                                data.push({
-                                    x: time + i * 1000,
-                                    y: 0
-                                });
-                            }
-                            return data;
-                        })()
+                        name: 'Cruise Control',
+                        data: generateZeroData()
+                    }, {
+                        name: 'Speed Up',
+                        data: generateZeroData()
+                    }, {
+                        name: 'Slow Down',
+                        data: generateZeroData()
                     }]
                 });
             });
@@ -420,21 +432,16 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 
     var getCurrentPollResults = function() {
         $http.get('api/poll/active/results').success(function(results) {
+            var pollResultsCounts = [0, 0, 0];
+            console.log(results);
 
             // Update the data for the first chart
-
-            var sum = 0;
             for (var key in results) {
                 var result = results[key];
-                var state = 0;
-                if (result.state === 2) {
-                    state = -1;
-                }
-
-                sum = sum + state;
+                pollResultsCounts[result.state]++
             }
 
-            $scope.pollResultsSum = sum;
+            $scope.pollResultsCounts = pollResultsCounts;
         });
     };
 
