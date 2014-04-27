@@ -44,6 +44,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         });
 
         getCurrentPoll().success(getCurrentPollResults);
+        getCurrentAssessmentResults();
         $http.get('/api/assessment/active').success(function(assessment){
             if (assessment !== "null"){
                 $scope.mode = 2;
