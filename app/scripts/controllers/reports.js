@@ -361,7 +361,7 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                         events: {
                             load: function() {
 
-                                // set up the updating of the chart each second
+                                // set up the updating of the chart each time interval
                                 var series = this.series;
                                 setInterval(function() {
                                     var time = (new Date()).getTime(); // current time
@@ -369,7 +369,7 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                                     series[0].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 0)], true, true);
                                     series[1].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 1)], true, true);
                                     series[2].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 2)], true, true);
-                                }, 1000);
+                                }, 5000);
                             }
                         }
                     },
