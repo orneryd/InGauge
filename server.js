@@ -44,7 +44,7 @@ require('./lib/config/express')(app);
 // Routing
 require('./lib/routes')(app, socket_api);
 
-server.listen(80);
+server.listen(process.env.PORT || 80);
 
 // Expose app
 exports = module.exports = app;
