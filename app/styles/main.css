@@ -80,3 +80,16 @@ body {
     margin-bottom: 10px;
     width:100%;
 }
+
+.btn-success {
+  color: #ffffff;
+  background-color: #ff6633;
+  border-color: #ff6633;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  color: black;
+  background-color: #cccccc;
+}
