@@ -15,6 +15,7 @@ body {
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
+  overflow: auto;
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
@@ -92,10 +93,4 @@ body {
 .nav-pills > li.active > a:focus {
   color: black;
   background-color: #cccccc;
-}
-
-.btn-info {
-  color: #ffffff;
-  background-color: #ff6633;
-  border-color: #ff6633;
 }
