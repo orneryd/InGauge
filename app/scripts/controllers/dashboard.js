@@ -43,9 +43,13 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
             }
         });
 
-        getCurrentPoll();
-        getCurrentPollResults();
-        
+        getCurrentPoll().success(getCurrentPollResults);
+        $http.get('/api/assessment/active').success(function(assessment){
+            if (assessment !== "null"){
+                $scope.mode = 2;
+                $scope.assessmentId = assessment._id;
+            }
+        });
         $http.get('/api/question').success(function(questions) {
             $scope.questions = questions;
         });
@@ -85,17 +89,11 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         });
     };
     var getCurrentPoll = function(){
-        $http.get('/api/poll/active').success(function(poll) {
+        return $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null' && poll) {
                 $scope.poll = poll;
                 $scope.pollNew = {};
                 updateFromNow();
-                $http.get('/api/assessment/active').success(function(assessment){
-                    if (assessment !== "null"){
-                        $scope.mode = 2;
-                        $scope.assessmentId = assessment._id;
-                    }
-                });
             } else {
                 $scope.poll = null;
             }
