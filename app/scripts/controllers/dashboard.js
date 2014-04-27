@@ -10,6 +10,13 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     // assesmentMode = 1;
     // resultsMode = 2;
     $scope.mode = 0;
+
+    $scope.states = {
+        0: 0,
+        1: 0,
+        2: 0
+    };
+    $scope.studentsConnectedCount = 0;
     
     var initialize = function() {
 
@@ -53,7 +60,6 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     
     $scope.returnToPolling = function(){
         if ($scope.mode === 2){
-            debugger;
             $http.put('/api/assessment/' + $scope.assessmentId).success(function(){
                 $scope.mode = 0;
                 $scope.assessmentResults = null;
@@ -118,6 +124,10 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
                         studentsConnectedCount++;
                     }
                 };
+
+                for (key in states) {
+                    states[key] = states[key] / studentsConnectedCount || 0;
+                }
             }
 
             $scope.states = states;
