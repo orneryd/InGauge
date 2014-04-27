@@ -38,7 +38,6 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
                 });
             }
             if (!hasAnswered && assessment){
-                debugger;
                 $scope.mode = 2;
                 $scope.assessment = assessment;
             }

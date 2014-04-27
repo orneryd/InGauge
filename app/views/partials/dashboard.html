@@ -18,7 +18,7 @@
         <div class="states_1">
           <span style="color: green;" ng-style="{opacity: states[1]}">{{ 100 * states[1] }}%</span>
         </div>    
-        <button class="btn btn-danger" ng-click="endPoll()">End</button>
+        <button class="btn btn-warning" ng-click="endPoll()">End</button>
     </div>  
 </div>
 <div ng-show="mode === 1">
@@ -54,9 +54,9 @@
     <div ng-hide="feedbackResults">
         Waiting for Results...
     </div>
-    <button class="btn btn-danger" ng-click="endFeedback()">End</button>
+    <button class="btn btn-warning" ng-click="endFeedback()">End</button>
 </div>
-<div class="row marketing">
+<div class="class="form-group">
     <button class="btn btn-large btn-info pull-left" ng-click="startQuestionMode()" ng-hide="mode !== 0">Assessment</button>
     <button class="btn btn-large btn-info center-block" ng-click="startFeedback()" ng-hide="mode !== 0">Feedback</button>
     <button class="btn btn-large btn-info pull-right" ng-click="returnToPolling()" ng-hide="mode === 0 || mode === 3">Return</button>
