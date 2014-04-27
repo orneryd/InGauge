@@ -47,7 +47,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $http.get('/api/assessment/active').success(function(assessment){
             if (assessment !== "null"){
                 $scope.mode = 2;
-                $scope.assessmentId = assessment._id;
+                $scope.assessment = assessment;
             }
         });
         $http.get('/api/question').success(function(questions) {
@@ -64,7 +64,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     
     $scope.returnToPolling = function(){
         if ($scope.mode === 2){
-            $http.put('/api/assessment/' + $scope.assessmentId).success(function(){
+            $http.put('/api/assessment/' + $scope.assessment._id).success(function(){
                 $scope.mode = 0;
                 $scope.assessmentResults = null;
             });
@@ -83,9 +83,9 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     };
     
     $scope.startAssessment = function(question){
-        $http.post('/api/assessment', { question: question }).success(function(id){
+        $http.post('/api/assessment', { question: question }).success(function(assessment){
             $scope.mode = 2;
-            $scope.assessmentId = id.replace(/\"/g, "");
+            $scope.assessment = assessment;
         });
     };
     var getCurrentPoll = function(){
