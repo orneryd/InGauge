@@ -1,0 +1,40 @@
+<div ng-include="'partials/navbar'"></div>
+<div ng-hide="currentStudent">
+	<h4>Students</h4>
+	<div class="form-group">
+	    <input class="form-control" placeholder="New student name" ng-model="newStudent.name">
+	    <button class="btn btn-sm btn-success" ng-click="addStudent()">Add student</button>
+	</div>
+    <button ng-click="selectStudent(student)" class="btn btn-info" style="margin: 10px 20px 10px 0px" ng-repeat="student in students">{{student.name}}</button>
+</div>
+<div class="form-group" ng-show="currentStudent">
+    <div class="form-group" style="text-align: center; margin-top: 30px" ng-show="mode === 0">
+        Waiting for teacher to start...
+        <img src="images/c4a959ca.loader.gif" style="display: block; margin: 20px auto">
+    </div>
+    <div style="margin: 10px auto;max-width: 300px" class="form-group" ng-show="mode === 1">
+        <label style="font-size: 18px" class="label-success" for="student-name">Student:</label>
+        <span id="student-name">{{currentStudent.name}}</span>
+        <div class="form-group">
+            <label style="font-size: 18px" class="label-success" for="session-name">Session:</label>
+            <span id="session-name">{{currentPoll.title}}</span>
+        </div>
+        <button class="btn btn-warning btn-block" ng-disabled="disableClick" ng-click="sendAction(2)">Slow Down</button>
+        <button class="btn btn-info btn-block" ng-disabled="disableClick" ng-click="sendAction(1)">Speed Up</button>
+    </div>
+    <div class="form-group" ng-show="mode === 2" class="col-md-10">
+        <h2>Teacher Question</h2>
+        <h3>{{ assessment.question.text }}</h3>
+        <table class="table table-striped">
+            <tr ng-repeat="answer in assessment.question.answers" ng-click="assessmentAnswerSelect(answer)">
+                <td>{{ answer.text }}</td>
+                <td style="padding: 3px"><button class="btn btn-xs btn-info" ng-click="assessmentAnswerSubmit(answer)" ng-show="answer === assessmentAnswerSelected">Submit</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="form-group message" ng-show="mode === 3">
+        <h2>Any Questions?</h2>
+        <input class="form-control" type="text" ng-model="message">
+        <button class="btn btn-success btn-sm" ng-click="messageSubmit(message)">Send</button>
+    </div>
+</div>

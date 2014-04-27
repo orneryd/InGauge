@@ -1,0 +1,9 @@
+<div class="header" ng-controller="NavbarCtrl">
+    <a class="navbar-brand hidden-xs" href="/" style="padding: 0"><img src="images/5f56cea5.inGauge_Logo.png" alt="inGauge Logo" style="height: 41px" title="inGauge"></a>
+    <a class="navbar-brand visible-xs" href="/" style="padding: 0"><img src="images/5f56cea5.inGauge_Logo.png" alt="inGauge Logo" style="height: 25px;width: 80px;position: relative;right: 15px" title="inGauge"></a>
+    <ul class="nav nav-pills pull-right">
+        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+            <a ng-href="{{item.link}}">{{item.title}}</a>
+        </li>
+    </ul>
+</div>
