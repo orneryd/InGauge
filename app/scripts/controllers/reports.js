@@ -366,9 +366,9 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
                                 setInterval(function() {
                                     var time = (new Date()).getTime(); // current time
 
-                                    series[0].addPoint([time, $scope.pollResultsCounts[0]], true, true);
-                                    series[1].addPoint([time, $scope.pollResultsCounts[1]], true, true);
-                                    series[2].addPoint([time, $scope.pollResultsCounts[2]], true, true);
+                                    series[0].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 0)], true, true);
+                                    series[1].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 1)], true, true);
+                                    series[2].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 2)], true, true);
                                 }, 1000);
                             }
                         }
@@ -433,7 +433,6 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
     var getCurrentPollResults = function() {
         $http.get('api/poll/active/results').success(function(results) {
             var pollResultsCounts = [0, 0, 0];
-            console.log(results);
 
             // Update the data for the first chart
             for (var key in results) {
@@ -443,6 +442,11 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
 
             $scope.pollResultsCounts = pollResultsCounts;
         });
+    };
+
+    var pollResultToPercent = function(counts, index) {
+        var total = counts[0] + counts[1] + counts[2];
+        return Math.round(100 * counts[index] / total);
     };
 
     $socket.on('newPoll', getCurrentPoll);
