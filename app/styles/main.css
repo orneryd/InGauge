@@ -93,3 +93,9 @@ body {
   color: black;
   background-color: #cccccc;
 }
+
+.btn-info {
+  color: #ffffff;
+  background-color: #ff6633;
+  border-color: #ff6633;
+}
