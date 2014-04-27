@@ -11,28 +11,27 @@
 	</div>
 </div>
 <div ng-show="currentStudent">
-    <div ng-hide="currentPoll">
+    <div ng-show="mode === 0">
         Waiting for teacher to start.
     </div>
-    <div ng-show="currentPoll" class="row">
-        <div class="col-md-2">
-            <div>{{currentStudent.name}}</div>
-            <div>{{currentPoll.title}}</div>
-
+    <div ng-show="mode === 1" class="row">
+        <div>{{currentStudent.name}}</div>
+        <div>{{currentPoll.title}}</div>
             <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction(2)">Slow Down</button>
             <div class="current-state">{{currentState}}</div>
             <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction(1)">Speed Up</button>
         </div>
 
-        <div ng-show="assessment" class="col-md-10">
-            <h2>Teacher Question</h2>
-            <h3>{{ assessment.question.text }}</h3>
-            <table class="table table-striped">
-                <tr ng-repeat="answer in assessment.question.answers" ng-click="assessmentAnswerSelect($index)">
-                    <td>{{ answer.text }}</td>
-                    <td><button class="btn btn-small btn-info" ng-click="assessmentAnswerSubmit()" ng-show="$index === assessmentAnswerSelectedId">Push</button></td>
-                </tr>
-            </table>
-        </div>
+        
+    </div>
+    <div ng-show="mode === 2" class="col-md-10">
+        <h2>Teacher Question</h2>
+        <h3>{{ assessment.question.text }}</h3>
+        <table class="table table-striped">
+            <tr ng-repeat="answer in assessment.question.answers" ng-click="assessmentAnswerSelect(answer)">
+                <td>{{ answer.text }}</td>
+                <td><button class="btn btn-small btn-info" ng-click="assessmentAnswerSubmit()" ng-show="answer === assessmentAnswerSelected">Push</button></td>
+            </tr>
+        </table>
     </div>
 </div>

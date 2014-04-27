@@ -23,7 +23,7 @@
     <table class="table table-striped">
         <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
             <td>{{ question.text }}</td>
-            <td><button class="btn btn-small btn-info" ng-click="pushQuestion(question)" ng-show="question.selected">Push</button></td>
+            <td><button class="btn btn-small btn-info" ng-click="startAssessment(question)" ng-show="question.selected">Push</button></td>
         </tr>
     </table>
 </div>

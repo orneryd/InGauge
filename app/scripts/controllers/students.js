@@ -5,7 +5,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.currentStudent = null;
     
     $scope.currentPoll = null;
-    
+    $scope.mode = 0;
     // cruise control
     // 1 = slow down
     // 2 = speed up
@@ -18,6 +18,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
             $scope.currentPoll = poll;
+            $scope.mode = 1;
             $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
         }
       });
@@ -25,7 +26,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
 
     var getCurrentAssessment = function(){
         $http.get('/api/assessment/active').success(function(assessment) {
-            $scope.assessment = assessment;
+            if (assessment !== 'null') {
+                $scope.mode = 2;
+                $scope.assessment = assessment;
+            }
         });
     };
 
@@ -41,7 +45,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     $scope.selectStudent = function(student){
         $scope.currentStudent = student;
-        getCurrentPoll()
+        getCurrentPoll();
         getCurrentAssessment();
     };
     
@@ -57,26 +61,33 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
             startWaiting();
         });
     };
-
-    $scope.assessmentAnswerSelect = function(answer_id) {
-        $scope.assessmentAnswerSelectedId = answer_id;
+    $scope.assessmentAnswerSelect = function(answer) {
+        $scope.assessmentAnswerSelected = answer;
     };
 
-    $scope.assessmentAnswerSubmit = function() {
-        $http.post('/api/questionResult/' + $scope.assessment.question._id, {id: $scope.assessmentAnswerSelectedId});
+    $scope.assessmentAnswerSubmit = function(answer) {
+        $http.post('/api/questionResult/' + $scope.assessment._id, answer).success(function(){
+            //need results for student
+            $scope.mode = $scope.currentPoll ? 1 : 0;
+        });
     };
     
     $socket.on("newPoll", function(){
         $http.get('/api/poll/active').success(function(poll) {
+            $scope.mode = 1;
             $scope.currentPoll = poll;
         });
     });
     
     $socket.on("closePoll", function(){
+        $scope.mode = 0;
         $scope.currentPoll = null;
     });
 
     $socket.on('newAssessment', getCurrentAssessment);
+    $socket.on('closeAssessment', function(){
+        $scope.mode = $scope.currentPoll ? 1 :0;
+    });
     
 //    $scope.testResults = [];
     $http.get('/api/student').success(function(students) {
