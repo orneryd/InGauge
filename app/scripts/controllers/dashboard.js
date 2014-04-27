@@ -101,7 +101,23 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     };
     var getCurrentAssessmentResults = function(){
         $http.get('/api/assessment/active/results').success(function(results) {
-            $scope.assessmentResults = results;
+            var assessmentResults = {};
+            var count = 0;
+            for (var key in results) {
+                count++;
+                var answer = results[key].givenAnswer;
+                if (assessmentResults[answer.text]) {
+                    assessmentResults[answer.text].responses++;
+                } else {
+                    assessmentResults[answer.text] = {responses: 1};
+                }
+
+                assessmentResults[answer.text].percent = function() {
+                    return 100 * this.responses / count;
+                };
+            }
+
+            $scope.assessmentResults = assessmentResults;
         });
     };
 
