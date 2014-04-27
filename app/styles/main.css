@@ -83,9 +83,14 @@ body {
 }
 
 .btn-success {
-  color: #ffffff;
-  background-color: #ff6633;
-  border-color: #ff6633;
+    margin-top: 10px;
+    color: #ffffff;
+    background-color: #ff6633;
+    border-color: #ff6633;
+}
+
+.message {
+    margin-top: 32px;
 }
 
 .correct {
