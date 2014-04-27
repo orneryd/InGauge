@@ -97,6 +97,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
         $http.get('/api/feedback/active').success(function(feedback) {
             if (feedback !== 'null' && feedback) {
                 $scope.mode = 3;
+                $scope.feedback = feedback;
             } else {
                 $http.post('/api/feedback').success(function(feedback){
                     $scope.mode = 3;
@@ -113,8 +114,8 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     };
 
     var getCurrentFeedbackResults = function(){
-        $http.get('/api/feedback/active/results').success(function(results) {
-            $scope.feedbackResults = results;
+        $http.get('/api/feedback/active').success(function(results) {
+            $scope.feedbackResults = results.feedbackResults;
         });
     };
     
