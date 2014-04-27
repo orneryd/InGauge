@@ -19,6 +19,10 @@ angular.module('sweduphxApp', [
             templateUrl: 'partials/dashboard',
             controller: 'DashboardCtrl'
         })
+        .when('/reports', {
+            templateUrl: 'partials/reports',
+            controller: 'ReportsCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });
