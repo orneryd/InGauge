@@ -3,7 +3,7 @@
 	<h4>Students</h4>
 	<div class="form-group">
 	    <input class="form-control" placeholder="New student name" ng-model="newStudent.name">
-	    <button style="margin-top: 10px;" class="btn btn-sm btn-success" ng-click="addStudent()">Add student</button>
+	    <button class="btn btn-sm btn-success" ng-click="addStudent()">Add student</button>
 	</div>
 
 	<div class="row marketing">
@@ -17,14 +17,11 @@
     <div ng-show="mode === 1" class="row">
         <div>{{currentStudent.name}}</div>
         <div>{{currentPoll.title}}</div>
-            <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction(2)">Slow Down</button>
-            <div class="current-state">{{currentState}}</div>
-            <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction(1)">Speed Up</button>
-        </div>
-
-        
+        <button class="btn btn-alert" ng-disabled="disableClick" ng-click="sendAction(2)">Slow Down</button>
+        <div class="current-state">{{currentState}}</div>
+        <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction(1)">Speed Up</button>
     </div>
-    <div ng-show="currentStudent && mode === 2" class="col-md-10">
+    <div ng-show="mode === 2" class="col-md-10">
         <h2>Teacher Question</h2>
         <h3>{{ assessment.question.text }}</h3>
         <table class="table table-striped">
@@ -33,5 +30,10 @@
                 <td><button class="btn btn-small btn-info" ng-click="assessmentAnswerSubmit(answer)" ng-show="answer === assessmentAnswerSelected">Push</button></td>
             </tr>
         </table>
+    </div>
+    <div class="form-group message" ng-show="mode === 3">
+        <h2>Any Questions?</h2>
+        <input class="form-control" type="text" ng-model="message" />
+        <button class="btn btn-success btn-sm" ng-click="messageSubmit">Send</button>
     </div>
 </div>
