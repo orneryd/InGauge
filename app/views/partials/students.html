@@ -21,7 +21,7 @@
         <div class="current-state">{{currentState}}</div>
         <button class="btn btn-info" ng-disabled="disableClick" ng-click="sendAction(1)">Speed Up</button>
     </div>
-    <div ng-show="currentStudent && mode === 2" class="col-md-10">
+    <div ng-show="mode === 2" class="col-md-10">
         <h2>Teacher Question</h2>
         <h3>{{ assessment.question.text }}</h3>
         <table class="table table-striped">
@@ -31,8 +31,8 @@
             </tr>
         </table>
     </div>
-    <div class="form-group message">
-        <label>Message the Teacher</label>
+    <div class="form-group message" ng-show="mode === 3">
+        <h2>Any Questions?</h2>
         <input class="form-control" type="text" ng-model="message" />
         <button class="btn btn-success btn-sm" ng-click="messageSubmit">Send</button>
     </div>
