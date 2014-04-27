@@ -98,3 +98,8 @@ body {
   color: black;
   background-color: #cccccc;
 }
+
+.states {
+  font-size: 68px;
+  font-weight:bold;
+}
