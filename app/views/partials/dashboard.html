@@ -36,6 +36,6 @@
     </div>
 </div>
 <div class="row marketing">
-    <button class="btn btn-large btn-info pull-left" ng-click="startQuestionMode()">Assesment</button>
-    <button class="btn btn-large btn-info pull-right" ng-click="returnToPolling()" ng-show="mode === 1">Return</button>
+    <button class="btn btn-large btn-info pull-left" ng-click="startQuestionMode()" ng-hide="mode !== 0">Assessment</button>
+    <button class="btn btn-large btn-info pull-right" ng-click="returnToPolling()"ng-hide="mode === 0">Return</button>
 </div>

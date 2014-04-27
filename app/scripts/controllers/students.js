@@ -26,8 +26,9 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
 
     var getCurrentAssessment = function(){
         $http.get('/api/assessment/active').success(function(assessment) {
+            if (assessment === 'null') return;
             var hasAnswered = false;
-            if (assessment !== 'null' && assessment.questionResults){
+            if (assessment.questionResults){
                 angular.forEach(assessment.questionResults, function(item){
                     if (item.student.name === $scope.currentStudent.name) {
                         hasAnswered = true;
