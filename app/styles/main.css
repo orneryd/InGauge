@@ -82,19 +82,6 @@ body {
     width:100%;
 }
 
-.btn-success {
-  margin-top: 10px;
-  color: #ffffff;
-  background-color: #ff6633;
-  border-color: #ff6633;
-}
-
-.btn-danger {
-color: #ffffff;
-background-color: #ff6633;
-border-color: #ff6633;
-}
-
 .message {
     margin-top: 32px;
 }
@@ -111,23 +98,31 @@ border-color: #ff6633;
 }
 
 .states_1 {
+    text-align: center;
+    line-height: 240px;
     color: #ffffff;
+    width: 48%;
+    height: 100%;
     background-color: #5cb85c;
     border-color: transparent;
     -webkit-transition: all 1s ease-in-out;
     transition: all 1s ease-in-out;
     opacity: 0;
-    font-size: 68px;
+    font-size: 84px;
 }
 
 .states_2 {
+    text-align: center;
+    line-height: 240px;
+    width: 48%;
+    height: 100%;
     color: #ffffff;
     background-color: #d9534f;
     border-color: transparent;
     -webkit-transition: all 1s ease-in-out;
     transition: all 1s ease-in-out;
     opacity: 0;
-    font-size: 68px;
+    font-size: 84px;
 }
 .fade-in {
     opacity: 1;

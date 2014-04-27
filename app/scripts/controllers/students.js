@@ -106,6 +106,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
 
     $scope.assessmentAnswerSubmit = function(answer) {
         $http.post('/api/questionResult/' + $scope.assessment._id, { student: $scope.currentStudent, givenAnswer: answer }).success(function(){
+            $scope.assessment = null;
             updateMode();
         });
     };
