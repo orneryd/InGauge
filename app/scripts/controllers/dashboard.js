@@ -144,7 +144,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
                 }
 
                 assessmentResults[answer.text].percent = function() {
-                    return 100 * this.responses / count;
+                    return parseInt(100 * this.responses / count);
                 };
             }
 

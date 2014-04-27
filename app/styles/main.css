@@ -94,7 +94,7 @@ body {
 }
 
 .correct {
-    background-color: cyan;
+    font-weight: 700;
 }
 
 .nav-pills > li.active > a,
@@ -105,10 +105,24 @@ body {
 }
 
 .states_1 {
-  font-size: 68px;
+    color: #ffffff;
+    background-color: #5cb85c;
+    border-color: transparent;
+    -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+    opacity: 0;
+    font-size: 68px;
 }
 
 .states_2 {
-  font-size: 68px;
-  font-weight:bold;
+    color: #ffffff;
+    background-color: #d9534f;
+    border-color: transparent;
+    -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+    opacity: 0;
+    font-size: 68px;
+}
+.fade-in {
+    opacity: 1;
 }
