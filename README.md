@@ -6,9 +6,9 @@ SWEDUPHX
  1. Install [nodejs](http://nodejs.org/)
  2. Install [Mongodb](http://www.mongodb.org/)
  3. Run `npm install`
- 4. Install bower with `npm install bower -g`
+ 4. Install bower with `sudo npm install bower -g`
  5. Run `bower install`
- 6. Install grunt with `npm install grunt -g`
+ 6. Install grunt with `sudo npm install grunt -g`
  7. Replace the contents of `app/bower_components/angular-ui/.bower.json` with the following:
 
         {
@@ -49,6 +49,6 @@ SWEDUPHX
 
  9. Start mongodb with `mongod`
     If this doesn't work, be sure to `sudo mkdir -p /data/db`
- 10. Start a development server by running `grunt serve`
+ 10. Start a development server by running `sudo grunt serve`
  11. The site should show up in your browser!
 

@@ -30,6 +30,6 @@ angular.module('sweduphxApp', [
 }).
 factory('$socket', ['socketFactory', function (socketFactory) {
     return socketFactory({
-        ioSocket: io.connect('http://localhost:9001', { resource:'socket.io' })
+        ioSocket: io.connect('/', { resource:'socket.io' })
     });
 }]);

@@ -3,7 +3,9 @@
 var express = require('express'),
     path = require('path'),
     fs = require('fs'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    http = require('http'),
+    io = require('socket.io');
 
 /**
  * Main application file
@@ -29,20 +31,20 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 // Populate empty DB with sample data
 require('./lib/config/dummydata');
 
-var app = express();
+var app = express(),
+    server = http.createServer(app),
+    channel = io.listen(server);
 // Express settings
-require('./lib/config/express')(app);
 
 // socket.io setup
-var socket_api = require('./lib/controllers/socket_api')(app);
+var socket_api = require('./lib/controllers/socket_api')(server, channel);
+
+require('./lib/config/express')(app);
 
 // Routing
 require('./lib/routes')(app, socket_api);
 
-// Start server
-app.listen(config.port, function () {
-  console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
-});
+server.listen(80);
 
 // Expose app
 exports = module.exports = app;
