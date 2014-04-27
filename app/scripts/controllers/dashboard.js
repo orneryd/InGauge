@@ -59,7 +59,9 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
 
     // Get the current active poll from the server
 
-    
+    $scope.getPercent = function(val){
+        return parseInt(100 * val);
+    };
     $scope.startQuestionMode = function(){
         $scope.mode = 1;
     };

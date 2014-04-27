@@ -13,10 +13,10 @@
         <img src="images/loader.gif" style="display: block; margin: 20px auto;" />
     </div>
     <div style="margin: 10px auto;max-width: 300px;" class="form-group" ng-show="mode === 1">
-        <label style="font-size: 18px;" class="label-success" for="student-name">Student:</label>
+        <label style="font-size: 18px;padding: 3px" class="label-success" for="student-name">Student:</label>
         <span id="student-name">{{currentStudent.name}}</span>
         <div class="form-group">
-            <label style="font-size: 18px;" class="label-success" for="session-name">Session:</label>
+            <label style="font-size: 18px;padding: 3px" class="label-success" for="session-name">Session:</label>
             <span id="session-name">{{currentPoll.title}}</span>
         </div>
         <button class="btn btn-warning btn-block" ng-disabled="disableClick" ng-click="sendAction(2)">Slow Down</button>
