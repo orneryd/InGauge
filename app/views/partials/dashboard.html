@@ -37,10 +37,24 @@
         </table>
     </div>
     <div ng-hide="assessmentResults">
-        Waiting for Results
+        Waiting for Results...
     </div>
+</div>
+<div ng-show="mode === 3">
+    <div ng-show="feedbackResults">
+        <table class="table table-striped">
+            <tr ng-repeat="result in feedbackResults">
+                <td>{{ result.text }}</td>
+            </tr>
+        </table>
+    </div>
+    <div ng-hide="feedbackResults">
+        Waiting for Results...
+    </div>
+    <button class="btn btn-danger" ng-click="endFeedback()">End</button>
 </div>
 <div class="row marketing">
     <button class="btn btn-large btn-info pull-left" ng-click="startQuestionMode()" ng-hide="mode !== 0">Assessment</button>
+    <button class="btn btn-large btn-info center-block" ng-click="startFeedback()" ng-hide="mode !== 0">Feedback</button>
     <button class="btn btn-large btn-info pull-right" ng-click="returnToPolling()"ng-hide="mode === 0">Return</button>
 </div>
