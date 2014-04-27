@@ -84,7 +84,12 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
                 $scope.poll = poll;
                 $scope.pollNew = {};
                 updateFromNow();
-
+                $http.get('/api/assessment/active').success(function(assessment){
+                    if (assessment !== "null"){
+                        $scope.mode = 2;
+                        $scope.assessmentId = assessment._id;
+                    }
+                });
             } else {
                 $scope.poll = null;
             }

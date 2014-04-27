@@ -15,7 +15,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.assessmentAnswerSelectedId = null;
 
     var getCurrentPoll = function(){
-      $http.get('/api/poll/active').success(function(poll) {
+      return $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
             $scope.currentPoll = poll;
             $scope.mode = 1;
@@ -26,7 +26,15 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
 
     var getCurrentAssessment = function(){
         $http.get('/api/assessment/active').success(function(assessment) {
-            if (assessment !== 'null') {
+            var hasAnswered = false;
+            if (assessment !== 'null' && assessment.questionResults){
+                angular.forEach(assessment.questionResults, function(item){
+                    if (item.student.name === $scope.currentStudent.name) {
+                        hasAnswered = true;
+                    }
+                });
+            }
+            if (!hasAnswered){
                 $scope.mode = 2;
                 $scope.assessment = assessment;
             }
@@ -45,8 +53,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
     $scope.selectStudent = function(student){
         $scope.currentStudent = student;
-        getCurrentPoll();
-        getCurrentAssessment();
+        getCurrentPoll().success(getCurrentAssessment).error(getCurrentAssessment);
     };
     
     $scope.sendAction = function(state){
@@ -66,7 +73,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
 
     $scope.assessmentAnswerSubmit = function(answer) {
-        $http.post('/api/questionResult/' + $scope.assessment._id, answer).success(function(){
+        $http.post('/api/questionResult/' + $scope.assessment._id, { student: $scope.currentStudent, givenAnswer: answer }).success(function(){
             //need results for student
             $scope.mode = $scope.currentPoll ? 1 : 0;
         });
