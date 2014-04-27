@@ -14,6 +14,8 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     $scope.assessment = null;
     $scope.assessmentAnswerSelectedId = null;
 
+    $scope.message = '';
+
     var getCurrentPoll = function(){
       return $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
@@ -78,6 +80,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
             //need results for student
             $scope.mode = $scope.currentPoll ? 1 : 0;
         });
+    };
+    
+    $scope.messageSubmit = function() {
+        
     };
     
     $socket.on("newPoll", function(){
