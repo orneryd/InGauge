@@ -83,10 +83,16 @@ body {
 }
 
 .btn-success {
-    margin-top: 10px;
-    color: #ffffff;
-    background-color: #ff6633;
-    border-color: #ff6633;
+  margin-top: 10px;
+  color: #ffffff;
+  background-color: #ff6633;
+  border-color: #ff6633;
+}
+
+.btn-danger {
+color: #ffffff;
+background-color: #ff6633;
+border-color: #ff6633;
 }
 
 .message {

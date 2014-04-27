@@ -1,9 +1,8 @@
 {
   "name": "SWEDUPHX",
-  "repository" :
-  { 
-    "type" : "git",
-    "url" : "https://github.com/timothyswt/SWEDUPHX.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timothyswt/SWEDUPHX.git"
   },
   "version": "0.0.0",
   "dependencies": {
@@ -13,7 +12,8 @@
     "ejs": "~0.8.4",
     "socket.io": "~0.9.16",
     "q": "~1.0.1",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "mongodb": "^1.4.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
