@@ -69,6 +69,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "bower install && grunt build"
+    "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
