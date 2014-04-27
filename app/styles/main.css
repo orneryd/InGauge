@@ -104,7 +104,11 @@ body {
   background-color: #cccccc;
 }
 
-.states {
+.states_1 {
+  font-size: 68px;
+}
+
+.states_2 {
   font-size: 68px;
   font-weight:bold;
 }
