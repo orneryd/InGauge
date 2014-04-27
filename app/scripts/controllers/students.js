@@ -10,7 +10,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     // 1 = slow down
     // 2 = speed up
     $scope.currentState = 0;
-
+    $scope.feedback = null;
     $scope.assessment = null;
     $scope.assessmentAnswerSelectedId = null;
 
@@ -37,7 +37,8 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
                     }
                 });
             }
-            if (!hasAnswered){
+            if (!hasAnswered && assessment){
+                debugger;
                 $scope.mode = 2;
                 $scope.assessment = assessment;
             }
@@ -46,7 +47,7 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
 
     var getCurrentFeedback = function() {
         $http.get('/api/feedback/active').success(function(feedback) {
-            if (feedback) {
+            if (feedback !== 'null' && feedback) {
                 $scope.feedback = feedback;
                 $scope.mode = 3;
             }
@@ -77,7 +78,6 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         // Feedback 
         } else if ($scope.feedback) {
             $scope.mode = 3;
-
         // Waiting
         } else {
             $scope.mode = 0;
@@ -111,8 +111,9 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         });
     };
     
-    $scope.messageSubmit = function() {
-        $http.post('/api/feedbackResult/' + $scope.feedback._id, { student: $scope.currentStudent, body: $scope.message }).success(function(){
+    $scope.messageSubmit = function(message) {
+        $http.post('/api/feedbackResult/' + $scope.feedback._id, { student: $scope.currentStudent, text: message }).success(function(){
+            $scope.feedback = null;
             updateMode();
         });
     };
