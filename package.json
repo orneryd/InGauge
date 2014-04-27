@@ -68,8 +68,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "node dist/server.js",
     "test": "grunt test",
-    "postinstall": "bower install && grunt build"
   }
 }
