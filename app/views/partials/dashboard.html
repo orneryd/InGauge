@@ -29,8 +29,12 @@
 </div>
 <div ng-show="mode === 2">
     <div ng-show="assessmentResults">
-        {{assessmentResults}}
-        <!-- TODO: results go here-->
+        <table class="table table-striped">
+            <tr ng-repeat="answer in assessment.question.answers" ng-class="{correct: answer.correct}">
+                <td>{{ answer.text }}</td>
+                <td>{{ assessmentResults[answer.text].percent() || 0 }}%</td>
+            </tr>
+        </table>
     </div>
     <div ng-hide="assessmentResults">
         Waiting for Results
