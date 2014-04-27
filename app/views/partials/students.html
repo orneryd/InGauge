@@ -27,9 +27,10 @@
         <div ng-show="assessment" class="col-md-10">
             <h2>Teacher Question</h2>
             <h3>{{ assessment.question.text }}</h3>
-            <table class="table">
+            <table class="table table-striped">
                 <tr ng-repeat="answer in assessment.question.answers" ng-click="assessmentAnswerSelect($index)">
-                    <td>{{ answer.text }} <span ng-show="answer.selected"><- You clicked that one</span></td>
+                    <td>{{ answer.text }}</td>
+                    <td><button class="btn btn-small btn-info" ng-click="assessmentAnswerSubmit()" ng-show="$index === assessmentAnswerSelectedId">Push</button></td>
                 </tr>
             </table>
         </div>

@@ -11,6 +11,9 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     // 2 = speed up
     $scope.currentState = 0;
 
+    $scope.assessment = null;
+    $scope.assessmentAnswerSelectedId = null;
+
     var getCurrentPoll = function(){
       $http.get('/api/poll/active').success(function(poll) {
         if (poll !== 'null') {
@@ -56,18 +59,11 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
     };
 
     $scope.assessmentAnswerSelect = function(answer_id) {
-        $scope.assessment.question.answers.forEach(function(element, index) {
-            var selectedIndex;
+        $scope.assessmentAnswerSelectedId = answer_id;
+    };
 
-            if (index === answer_id) {
-                element.selected = true;
-
-            } else {
-                element.selected = false;
-            }
-        });
-
-        $http.post('/api/questionResult/' + $scope.assessment.question._id, {id: answer_id});
+    $scope.assessmentAnswerSubmit = function() {
+        $http.post('/api/questionResult/' + $scope.assessment.question._id, {id: $scope.assessmentAnswerSelectedId});
     };
     
     $socket.on("newPoll", function(){
