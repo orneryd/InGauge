@@ -58,10 +58,10 @@ angular.module('sweduphxApp').controller('StudentsCtrl', ["$scope", "$http", "$s
         resetState = $timeout(function(){
             $scope.currentState = 0;
             $http.post('/api/action/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
-        }, 60000);
+        }, 5000);
         resetButtons = $timeout(function(){
             $scope.disableClick = false;
-        }, 10000);
+        }, 2000);
     };
 
     // Update the mode based on existing data in order of priority
