@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
     $scope.poll;
     $scope.assessmentResults;
     $scope.pollNew = {};
@@ -18,14 +18,13 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
     };
     $scope.studentsConnectedCount = 0;
     
-    var initialize = function() {
-
+    var init = function() {
         // Set socket events
-        $socket.on('newPollAction', getCurrentPollResults);
-        $socket.on('newPoll', getCurrentPoll);
-        $socket.on('closePoll', getCurrentPoll);
-        $socket.on('newQuestionResult', getCurrentAssessmentResults);
-        $socket.on('newFeedbackResult', getCurrentFeedbackResults);
+        $socket.on('pollResultCreated', getCurrentPollResults);
+        $socket.on('pollCreated', getCurrentPoll);
+        $socket.on('pollClosed', getCurrentPoll);
+        $socket.on('assessmentResultCreated', getCurrentAssessmentResults);
+        $socket.on('feedbackResultCreated', getCurrentFeedbackResults);
 
         $scope.$watch('poll', function() {
             // Count all distinct action states
@@ -117,7 +116,7 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
 
     var getCurrentFeedbackResults = function(){
         $http.get('/api/feedback/active').success(function(results) {
-            $scope.feedbackResults = results.feedbackResults;
+            $scope.feedbackResults = results.results;
         });
     };
     
@@ -202,8 +201,8 @@ angular.module('sweduphxApp').controller('DashboardCtrl', ["$scope", "$http", "$
 
     // End the current poll
     $scope.endPoll = function(){
-        $http.put('/api/poll/' + $scope.poll._id, {}).success(getCurrentPoll);
+        $http.put('/api/poll/' + $scope.poll._id).success(getCurrentPoll);
     };
     
-    initialize();
+    init();
 }]);

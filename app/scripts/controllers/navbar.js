@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('NavbarCtrl', ["$scope", "$location", function ($scope, $location){
+angular.module('inGuage').controller('NavbarCtrl', ["$scope", "$location", function ($scope, $location){
     $scope.menu = [{
         'title': 'Student',
         'link': '/'

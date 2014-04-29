@@ -37,7 +37,7 @@ var app = express(),
 // Express settings
 
 // socket.io setup
-var socket_api = require('./lib/controllers/socket_api')(server, channel);
+var socket_api = require('./lib/controllers/socket_api')(app, server, channel);
 
 require('./lib/config/express')(app);
 

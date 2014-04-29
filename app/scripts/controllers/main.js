@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('MainCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
+angular.module('inGuage').controller('MainCtrl', ["$scope", "$http", "$socket", function ($scope, $http, $socket) {
 /*    $http.get('/api/question').success(function(questions) {
         $scope.questions = questions;
     });

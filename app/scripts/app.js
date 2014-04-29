@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sweduphxApp', [
+angular.module('inGuage', [
     'ngCookies',
     'ngResource',
     'ngSanitize',

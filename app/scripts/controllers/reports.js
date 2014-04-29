@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+angular.module('inGuage').controller('ReportsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
 
     $scope.pollResultsCounts = [0, 0, 0];
 
@@ -457,9 +457,9 @@ angular.module('sweduphxApp').controller('ReportsCtrl', ["$scope", "$http", "$so
         }
     };
 
-    $socket.on('newPoll', getCurrentPoll);
-    $socket.on('closePoll', getCurrentPoll);
-    $socket.on('newPollAction', getCurrentPollResults);
+    $socket.on('pollCreated', getCurrentPoll);
+    $socket.on('pollClosed', getCurrentPoll);
+    $socket.on('pollResultCreated', getCurrentPollResults);
 
     getCurrentPoll();
     getCurrentPollResults();
