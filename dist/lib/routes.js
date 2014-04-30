@@ -8,60 +8,26 @@ var api = require('./controllers/api'),
  */
 module.exports = function(app, socketsApi){
     // Server API Routes
+
+    /* Base methods */
     /* GET methods */
-    app.get('/api/poll/active', function(req, res){
-        api.getActivePoll(req, res);
-    });
-    app.get('/api/poll/active/results', function(req, res){
-        api.getCurrentPollResults(req, res);
-    });
-    app.get('/api/assessment/active', function(req, res){
-        api.getActiveAssessment(req, res);
-    });
-    app.get('/api/assessment/active/results', function(req, res){
-        api.getCurrentAssessmentResults(req, res);
-    });
-    app.get('/api/feedback/active', function(req, res){
-        api.getActiveFeedback(req, res);
-    });
-    app.get('/api/feedback/active/results', function(req, res){
-        api.getCurrentFeedbackResults(req, res);
-    });
     app.get('/api/:type', api.get);
+    app.get('/api/:type/active', api.getActive);
+    app.get('/api/:type/active/results', api.getActiveResults);
     app.get('/api/:type/:id', api.get);
-    
+    app.get('/api/:type/:id/results', api.getResults);
+
     /* POST methods */
-    app.post('/api/poll', function(req, res){
-        api.createPolls(req, res).done(socketsApi.newPoll);
+    app.post('/api/:type', function(req, res){
+        api.post(req, res).done(socketsApi.created);
     });
-    app.post('/api/action/:id', function(req, res){
-        api.postPollAction(req, res).done(socketsApi.newPollAction);
-    });
-    app.post('/api/student', function(req, res){
-        api.postStudents(req, res).done(socketsApi.newStudent);
-    });
-    app.post('/api/assessment', function(req, res){
-        api.postAssessment(req, res).done(socketsApi.newAssessment);
-    });
-    app.post('/api/questionResult/:id', function(req, res){
-        api.postQuestionResult(req, res).done(socketsApi.newQuestionResult);
-    });
-    app.post('/api/feedback', function(req, res){
-        api.postFeedback(req, res).done(socketsApi.newFeedback);
-    });
-    app.post('/api/feedbackResult/:id', function(req, res){
-        api.postFeedbackResult(req, res).done(socketsApi.newFeedbackResult);
-    });
-    
+    app.post('/api/:type/:id',function(req, res){
+        api.postResult(req, res).done(socketsApi.created);
+    }); 
+
     /*PUT methods */
-    app.put('/api/poll/:id', function(req, res){
-        api.updatePolls(req, res).done(socketsApi.closePoll);
-    });
-    app.put('/api/assessment/:id', function(req, res){
-        api.updateAssessment(req, res).done(socketsApi.closeAssessment);
-    });
-    app.put('/api/feedback/:id', function(req, res){
-        api.updateFeedback(req, res).done(socketsApi.closeFeedback);
+    app.put('/api/:type/:id', function(req, res){
+        api.put(req, res).done(socketsApi.closed)
     });
 
     // All undefined api routes should return a 404

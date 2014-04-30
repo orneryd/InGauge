@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 var feedbackSchema = new Schema({
     start: Date,
     end: Date,
-    feedbackResults: [feedbackResultSchema]
+    results: [feedbackResultSchema]
 });
 
 /**

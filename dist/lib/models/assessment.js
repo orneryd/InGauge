@@ -12,7 +12,7 @@ var assessmentSchema = new Schema({
     start: Date,
     end: Date,
     question: questionSchema,
-    questionResults: [questionResultSchema]
+    results: [questionResultSchema]
 });
 
 /**
