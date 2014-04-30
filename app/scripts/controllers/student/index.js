@@ -1,9 +1,7 @@
-'use strict';
-
-angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+angular.module('inGuage').controller('StudentIndexCtrl', ["$scope", "$http", "$io", "$timeout", function ($scope, $http, $io, $timeout) {
     var resetState, resetButtons;
     $scope.currentStudent = null;
-    
+
     $scope.currentPoll = null;
     $scope.mode = 0;
     // cruise control
@@ -17,26 +15,26 @@ angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socke
     $scope.message = '';
 
     var init = function(){
-        $socket.on("pollCreated", function(){
+        $io.on("pollCreated", function(){
             $http.get('/api/poll/active').success(function(poll) {
                 $scope.mode = 1;
                 $scope.currentPoll = poll;
             });
         });
 
-        $socket.on("pollClosed", function(){
+        $io.on("pollClosed", function(){
             $scope.mode = 0;
             $scope.currentPoll = null;
         });
 
-        $socket.on('assessmentCreated', getCurrentAssessment);
-        $socket.on('assessmentClosed', function(){
+        $io.on('assessmentCreated', getCurrentAssessment);
+        $io.on('assessmentClosed', function(){
             $scope.mode = $scope.currentPoll ? 1 :0;
         });
 
-        $socket.on('feedbackCreated', getCurrentFeedback);
+        $io.on('feedbackCreated', getCurrentFeedback);
 
-        $socket.on('studentCreated', function(){
+        $io.on('studentCreated', function(){
             $http.get('/api/student').success(function(students) {
                 $scope.students = students;
             });
@@ -46,13 +44,13 @@ angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socke
         });
     };
     var getCurrentPoll = function(){
-      return $http.get('/api/poll/active').success(function(poll) {
-        if (poll !== 'null') {
-            $scope.currentPoll = poll;
-            $scope.mode = 1;
-            $http.post('/api/poll/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
-        }
-      });
+        return $http.get('/api/poll/active').success(function(poll) {
+            if (poll !== 'null') {
+                $scope.currentPoll = poll;
+                $scope.mode = 1;
+                $http.post('/api/poll/' + $scope.currentPoll._id, { student: $scope.currentStudent, state: 0 });
+            }
+        });
     };
 
     var getCurrentAssessment = function(){
@@ -99,14 +97,14 @@ angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socke
         if ($scope.currentPoll) {
             $scope.mode = 1;
 
-        // Assessment
+            // Assessment
         } else if ($scope.assessment) {
             $scope.mode = 2;
 
-        // Feedback 
+            // Feedback 
         } else if ($scope.feedback) {
             $scope.mode = 3;
-        // Waiting
+            // Waiting
         } else {
             $scope.mode = 0;
         }
@@ -116,7 +114,7 @@ angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socke
         $scope.currentStudent = student;
         getCurrentPoll().success(getCurrentAssessment).error(getCurrentAssessment);
     };
-    
+
     $scope.sendAction = function(state){
         if (resetState){
             $timeout.cancel(resetState);
@@ -139,14 +137,14 @@ angular.module('inGuage').controller('StudentsCtrl', ["$scope", "$http", "$socke
             updateMode();
         });
     };
-    
+
     $scope.messageSubmit = function(message) {
         $http.post('/api/feedback/' + $scope.feedback._id, { student: $scope.currentStudent, text: message }).success(function(){
             $scope.feedback = null;
             updateMode();
         });
     };
-    
+
 //    $scope.testResults = [];
 
     $scope.newStudent = {

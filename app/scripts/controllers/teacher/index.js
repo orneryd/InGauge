@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$io", "$timeout", function ($scope, $http, $io, $timeout) {
     $scope.poll;
     $scope.assessmentResults;
     $scope.pollNew = {};
@@ -17,20 +15,20 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
         2: 0
     };
     $scope.studentsConnectedCount = 0;
-    
+
     var init = function() {
         // Set socket events
-        $socket.on('pollResultCreated', getCurrentPollResults);
-        $socket.on('pollCreated', getCurrentPoll);
-        $socket.on('pollClosed', getCurrentPoll);
-        $socket.on('assessmentResultCreated', getCurrentAssessmentResults);
-        $socket.on('feedbackResultCreated', getCurrentFeedbackResults);
+        $io.on('pollResultCreated', getCurrentPollResults);
+        $io.on('pollCreated', getCurrentPoll);
+        $io.on('pollClosed', getCurrentPoll);
+        $io.on('assessmentResultCreated', getCurrentAssessmentResults);
+        $io.on('feedbackResultCreated', getCurrentFeedbackResults);
 
         $scope.$watch('poll', function() {
             // Count all distinct action states
             if ($scope.poll && $scope.poll.actions) {
                 var states = {};
-                
+
                 $scope.poll.actions.forEach(function(element) {
                     if (!states[element.state]) {
                         states[element.state] = 0;
@@ -64,7 +62,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
     $scope.startQuestionMode = function(){
         $scope.mode = 1;
     };
-    
+
     $scope.returnToPolling = function(){
         if ($scope.mode === 2){
             $http.put('/api/assessment/' + $scope.assessment._id).success(function(){
@@ -75,7 +73,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
             $scope.mode = 0;
         }
     };
-    
+
     $scope.selectQuestion = function(q){
         // console.log("show", arguments, this);
         if ($scope.lastSelected) {
@@ -84,7 +82,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
         q.selected = true;
         $scope.lastSelected = q;
     };
-    
+
     $scope.startAssessment = function(question){
         $http.post('/api/assessment', { question: question }).success(function(assessment){
             $scope.mode = 2;
@@ -93,7 +91,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
     };
 
     $scope.feedbackResults;
-    
+
     $scope.startFeedback = function(){
         $http.get('/api/feedback/active').success(function(feedback) {
             if (feedback !== 'null' && feedback) {
@@ -107,7 +105,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
             }
         });
     };
-    
+
     $scope.endFeedback = function(){
         $http.put('/api/feedback/' + $scope.feedback._id).success(function(){
             $scope.mode = 0;
@@ -119,7 +117,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
             $scope.feedbackResults = results.results;
         });
     };
-    
+
     var getCurrentPoll = function(){
         return $http.get('/api/poll/active').success(function(poll) {
             if (poll !== 'null' && poll) {
@@ -193,7 +191,7 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
         $timeout.cancel(timeout);
         timeout = $timeout(updateFromNow, 60000);
     };
-    
+
     // Create a new poll
     $scope.startNewPoll = function(){
         $http.post('/api/poll', { title: $scope.pollNew.title }).success(getCurrentPoll);
@@ -203,6 +201,6 @@ angular.module('inGuage').controller('DashboardCtrl', ["$scope", "$http", "$sock
     $scope.endPoll = function(){
         $http.put('/api/poll/' + $scope.poll._id).success(getCurrentPoll);
     };
-    
+
     init();
 }]);

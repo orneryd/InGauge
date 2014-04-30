@@ -1,34 +1,31 @@
-'use strict';
-
 angular.module('inGuage', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ui.select2',
     'ui.bootstrap',
     'btford.socket-io'
 ])
 .config(function ($routeProvider, $locationProvider){
     $routeProvider
-        .when('/', {
-            templateUrl: 'partials/students',
-            controller: 'StudentsCtrl'
+        .when('/student', {
+            templateUrl: 'partials/student/index',
+            controller: 'StudentIndexCtrl'
         })
-        .when('/dashboard', {
-            templateUrl: 'partials/dashboard',
-            controller: 'DashboardCtrl'
+        .when('/teacher', {
+            templateUrl: 'partials/teacher/index',
+            controller: 'TeacherIndexCtrl'
         })
         .when('/reports', {
-            templateUrl: 'partials/reports',
-            controller: 'ReportsCtrl'
+            templateUrl: 'partials/reports/index',
+            controller: 'ReportsIndexCtrl'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/student'
         });
     $locationProvider.html5Mode(true);
 }).
-factory('$socket', ['socketFactory', function (socketFactory) {
+factory('$io', ['socketFactory', function (socketFactory) {
     return socketFactory({
         ioSocket: io.connect('/', { resource:'socket.io' })
     });

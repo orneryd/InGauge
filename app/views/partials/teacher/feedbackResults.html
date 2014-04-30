@@ -1,0 +1,12 @@
+<h2>Feedback</h2>
+<div ng-show="feedbackResults">
+    <table class="table table-striped">
+        <tr ng-repeat="result in feedbackResults">
+            <td>{{ result.text }}</td>
+        </tr>
+    </table>
+</div>
+<div ng-hide="feedbackResults">
+    Waiting for Results...
+</div>
+<button style="margin-top: 20px;" class="btn btn-warning" ng-click="endFeedback()">End</button>

@@ -5,7 +5,6 @@
         <input style="height: 30px;position: relative;top: 1px;" placeholder="Title" ng-model="pollNew.title" />
         <button class="btn btn-sm btn-info" ng-click="startNewPoll()">Start</button>
     </div>
-
     <div class="form-group poll-existing" ng-show="poll">
         <h4>Class Engagement:</h4>
         <div style="width: 100%; height: 250px; margin: 20px 0;">
@@ -16,50 +15,15 @@
                 <div>{{ getPercent(states[1]) }}%</div>
             </div>
         </div>
-
         <div style="clear: both;"></div>
         <h2 style="display: inline;position: relative;top: 7px;">Active Poll: {{ poll.title }}</h2>
         <button style="margin-left: 30px;" class="btn btn-sm btn-warning" ng-click="endPoll()">End</button>
         <h4>Started: {{ poll.momentFromNow }}</h4>
-
-    </div>  
-</div>
-<div ng-show="mode === 1">
-    <h3>Select an assessment:</h3>
-    <table class="table table-striped table-hover table-bordered table-responsive">
-        <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
-            <td>{{ question.text }}</td>
-            <td style="padding: 3px;"><button class="btn btn-xs btn-info" ng-click="startAssessment(question)" ng-show="question.selected">Submit</button></td>
-        </tr>
-    </table>
-</div>
-<div ng-show="mode === 2">
-    <div ng-show="assessmentResults">
-        <table class="table table-striped table-hover table-bordered table-responsive">
-            <tr ng-repeat="answer in assessment.question.answers" ng-class="{correct: answer.correct}">
-                <td>{{ answer.text }}</td>
-                <td>{{ assessmentResults[answer.text].percent() || 0 }}%</td>
-            </tr>
-        </table>
-    </div>
-    <div ng-hide="assessmentResults">
-        Waiting for Results...
     </div>
 </div>
-<div ng-show="mode === 3">
-    <h2>Feedback</h2>
-    <div ng-show="feedbackResults">
-        <table class="table table-striped">
-            <tr ng-repeat="result in feedbackResults">
-                <td>{{ result.text }}</td>
-            </tr>
-        </table>
-    </div>
-    <div ng-hide="feedbackResults">
-        Waiting for Results...
-    </div>
-    <button style="margin-top: 20px;" class="btn btn-warning" ng-click="endFeedback()">End</button>
-</div>
+<ng-include ng-show="mode === 1" src="'partials/teacher/assessment'"></ng-include>
+<ng-include ng-show="mode === 2" src="'partials/teacher/assessmentResults'"></ng-include>
+<ng-include ng-show="mode === 3" src="'partials/teacher/feedbackResults'"></ng-include>
 <div style="margin: 20px 0;" class="form-group btn-group pull-right">
     <button class="btn btn-default" ng-click="startQuestionMode()" ng-hide="mode !== 0">Assessment</button>
     <button class="btn btn-default" ng-click="startFeedback()" ng-hide="mode !== 0">Feedback</button>

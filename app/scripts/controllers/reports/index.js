@@ -1,6 +1,4 @@
-'use strict';
-
-angular.module('inGuage').controller('ReportsCtrl', ["$scope", "$http", "$socket", "$timeout", function ($scope, $http, $socket, $timeout) {
+angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$io", function ($scope, $http, $io) {
 
     $scope.pollResultsCounts = [0, 0, 0];
 
@@ -295,7 +293,7 @@ angular.module('inGuage').controller('ReportsCtrl', ["$scope", "$http", "$socket
             });
         });
 
-    }
+    };
     var initChart2 = function(){
         $(function () {
             $('#container2').highcharts({
@@ -417,7 +415,8 @@ angular.module('inGuage').controller('ReportsCtrl', ["$scope", "$http", "$socket
             });
 
         });
-    }
+    };
+    
     applyTheme();
 
     initChart();
@@ -457,9 +456,9 @@ angular.module('inGuage').controller('ReportsCtrl', ["$scope", "$http", "$socket
         }
     };
 
-    $socket.on('pollCreated', getCurrentPoll);
-    $socket.on('pollClosed', getCurrentPoll);
-    $socket.on('pollResultCreated', getCurrentPollResults);
+    $io.on('pollCreated', getCurrentPoll);
+    $io.on('pollClosed', getCurrentPoll);
+    $io.on('pollResultCreated', getCurrentPollResults);
 
     getCurrentPoll();
     getCurrentPollResults();

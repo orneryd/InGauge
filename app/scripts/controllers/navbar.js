@@ -1,12 +1,10 @@
-'use strict';
-
 angular.module('inGuage').controller('NavbarCtrl', ["$scope", "$location", function ($scope, $location){
     $scope.menu = [{
         'title': 'Student',
-        'link': '/'
+        'link': '/student'
     },{
         'title': 'Teacher',
-        'link': '/dashboard'
+        'link': '/teacher'
     },{
         'title': 'Reports',
         'link': '/reports'
