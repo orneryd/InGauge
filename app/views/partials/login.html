@@ -1,0 +1,28 @@
+<div ng-controller="LoginCtrl">
+    <div class="form-group form-inline">
+        <div style="width: 230px;margin: 0 auto;">
+            <div class="btn-group btn-group-lg">
+                <button ng-class="{'btn-info': mode === 0, 'btn-default': mode === 1}" class="btn btn-lg" ng-click="switchMode(0)">Student</button>
+                <button ng-class="{'btn-info': mode === 1, 'btn-default': mode === 0}" class="btn btn-lg" ng-click="switchMode(1)">Teacher</button>
+            </div>
+        </div>
+    </div>
+    <form class="form-group form-inline" ng-show="mode === 0" style="margin-top: 40px;" ng-submit="joinSession()">
+        <div class="form-group">
+            <input class="form-control" ng-model="student.id" type="text" name="user" placeholder="Student ID" />
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="student.sessionCode" type="password" name="pass" placeholder="Session Code (ABC123)" />
+        </div>
+        <input class="form-control btn btn-primary" type="submit" value="Submit" />
+    </form>
+    <form class="form-group form-inline" ng-show="mode === 1" style="margin-top: 40px;" ng-submit="submit()">
+        <div class="form-group">
+            <input class="form-control" ng-model="user.username" type="text" name="user" placeholder="Username" />
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="user.password" type="password" name="pass" placeholder="Password" />
+        </div>
+        <input class="form-control btn btn-primary" type="submit" value="Login" />
+    </form>
+</div>
