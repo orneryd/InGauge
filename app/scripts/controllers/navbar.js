@@ -1,10 +1,7 @@
 angular.module('inGuage').controller('NavbarCtrl', ["$scope", "$location", function ($scope, $location){
     
     $scope.menu = [{
-        'title': 'Student',
-        'link': '/student'
-    },{
-        'title': 'Teacher',
+        'title': 'Dashboard',
         'link': '/teacher'
     },{
         'title': 'Reports',
