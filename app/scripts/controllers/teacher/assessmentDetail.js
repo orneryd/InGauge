@@ -14,7 +14,6 @@ angular.module('inGuage').controller('TeacherAssessmentDetailCtrl', ["$scope", "
         //TODO: add editable questions.
     };
     $scope.remove = function(question) {
-        debugger;
         $http.delete("/api/assessment/" + $scope.assessment._id + "/question/" + question.id).success(getAssessment);
     };
     

@@ -16,8 +16,17 @@
 </div>
 <div style="margin: 20px 0;" class="form-group btn-group pull-right">
     <button style="margin-left: 30px;" class="btn btn-sm btn-warning" ng-click="endSession()">End</button>
-    <button class="btn btn-sm btn-default" ng-click="startQuestionMode()">Assessment</button>
+    <button class="btn btn-sm btn-default" ng-click="toggleAssessments()">Assessment</button>
     <button class="btn btn-sm btn-default" ng-click="startFeedback()">Feedback</button>
     <a href="/teacher" class="btn btn-sm btn-default">Return</a>
     <div style="clear: both"></div>
+</div>
+<div style="clear:both;"></div>
+<div id="assessments" ng-show="showAssessments">
+    <table class="table table-bordered table-striped table-responsive table-hover">
+        <tr ng-repeat="a in session.assessments">
+            <td>{{a.name}}</td>
+            <td><button class="btn btn-sm btn-info" ng-click="issueAssessment(a)">Issue</button></td>
+        </tr>
+    </table>
 </div>

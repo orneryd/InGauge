@@ -16,12 +16,10 @@ angular.module('inGuage').controller('TeacherSessionDetailCtrl', ["$scope", "$ht
     };
     
     $scope.add = function(assessment){
-        debugger;
         $http.post("/api/session/" + $scope.session._id + "/assessment", assessment).success(getSession);
     };
     
     $scope.remove = function(assessment){
-        debugger;
         $http.delete("/api/session/" + $scope.session._id + "/assessment/" + assessment._id).success(getSession);
     };
 

@@ -66,6 +66,10 @@ angular.module('inGuage', [
             templateUrl: 'partials/teacher/session',
             controller: 'TeacherSessionCtrl'
         })
+        .when('/teacher/session/:id/assessment/:assessmentId', {
+            templateUrl: 'partials/teacher/assessmentResults',
+            controller: 'TeacherAssessmentResultsCtrl'
+        })
         .when('/teacher/session/:id/manage', {
             templateUrl: 'partials/teacher/sessionDetail',
             controller: 'TeacherSessionDetailCtrl'

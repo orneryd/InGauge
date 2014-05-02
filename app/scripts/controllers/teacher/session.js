@@ -37,9 +37,20 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         $timeout.cancel(timeout);
         timeout = $timeout(updateFromNow, 60000);
     };
+    $scope.showAssessments = false;
 
+    $scope.toggleAssessments = function() {
+        $scope.showAssessments = !$scope.showAssessments;
+    };
+    $scope.issueAssessment = function(assessment) {
+        debugger;
+        $http.post("/api/session/" + $scope.session._id + "/assessment/" + assessment._id + "/start").success(function(){
+            $location.path("/teacher/session/" + $scope.session._id + "/assessment/" + assessment._id);
+        });
+    };
+    
     $scope.startFeedback = function(){
-
+        $location.path("/teacher/session/" + $scope.session._id + "/feedback");
     };
     // End the current session
     $scope.endSession = function(){
