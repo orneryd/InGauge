@@ -1,0 +1,19 @@
+<div ng-include="'partials/navbar'"></div>
+<div class="container-fluid session-existing">
+    <h4>Assessments in Session:</h4>
+    <table class="table table-striped table-hover table-bordered table-responsive">
+        <tr ng-repeat="assessment in session.assessments">
+            <td>{{ assessment.name }}</td>
+            <td><button class="btn btn-info btn-xs" ng-click="remove(assessment)">Remove</button></td>
+        </tr>
+    </table>
+</div>
+<div class="container-fluid">
+    <h4>Available Assessments:</h4>
+    <table class="table table-striped table-hover table-bordered table-responsive">
+        <tr ng-repeat="assessment in assessments" ng-hide="assessmentInSession(assessment)">
+            <td>{{ assessment.name }}</td>
+            <td><button class="btn btn-info btn-xs" ng-click="add(assessment)">Add</button></td>
+        </tr>
+    </table>
+</div>

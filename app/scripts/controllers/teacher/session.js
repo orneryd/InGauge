@@ -79,6 +79,7 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
             $scope.studentsConnectedCount = studentsConnectedCount;
         });
     });
+    
     $http.get("/api/session/" + $routeParams.id).success(function(session){
         $scope.session = session;
         updateFromNow();
