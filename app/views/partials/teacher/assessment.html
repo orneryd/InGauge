@@ -1,7 +1,0 @@
-<h3>Select an assessment:</h3>
-<table class="table table-striped table-hover table-bordered table-responsive">
-    <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
-        <td>{{ question.text }}</td>
-        <td style="padding: 3px;"><button class="btn btn-xs btn-info" ng-click="startAssessment(question)" ng-show="question.selected">Submit</button></td>
-    </tr>
-</table>

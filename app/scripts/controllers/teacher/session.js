@@ -38,6 +38,9 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         timeout = $timeout(updateFromNow, 60000);
     };
 
+    $scope.startFeedback = function(){
+
+    };
     // End the current session
     $scope.endSession = function(){
         $http.put('/api/session/' + $scope.session._id).success(function(){

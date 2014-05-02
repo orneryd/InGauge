@@ -23,7 +23,7 @@ angular.module('inGuage', [
         responseError: function (response) {
             if (response.status === 401 && $location.path().indexOf("login") === -1) {
                 delete $window.localStorage.token;
-                $location.path("/login");
+                $location.path("/login/student");
             }
             return response || $q.when(response);
         }
@@ -31,6 +31,7 @@ angular.module('inGuage', [
 }])
 .config(["$routeProvider", "$locationProvider", "$httpProvider", function ($routeProvider, $locationProvider, $httpProvider){
     $routeProvider
+        /* Login routes */
         .when('/login/student', {
             templateUrl: 'partials/student/login',
             controller: 'StudentLoginCtrl'
@@ -43,6 +44,7 @@ angular.module('inGuage', [
             templateUrl: 'partials/register',
             controller: 'RegisterCtrl'
         })
+        /* Student Routes */
         .when('/student/session/:id', {
             templateUrl: 'partials/student/session',
             controller: 'StudentSessionCtrl'
@@ -55,6 +57,7 @@ angular.module('inGuage', [
             templateUrl: 'partials/student/feedback',
             controller: 'StudentFeedbackCtrl'
         })
+        /* Teacher routes*/
         .when('/teacher', {
             templateUrl: 'partials/teacher/index',
             controller: 'TeacherIndexCtrl'
@@ -63,9 +66,17 @@ angular.module('inGuage', [
             templateUrl: 'partials/teacher/session',
             controller: 'TeacherSessionCtrl'
         })
-        .when('/teacher/assessment/:sessionId', {
-            templateUrl: 'partials/teacher/assessment',
-            controller: 'TeacherAssessmentCtrl'
+        .when('/teacher/session/:id/manage', {
+            templateUrl: 'partials/teacher/sessionDetail',
+            controller: 'TeacherSessionCtrl'
+        })
+        .when('/teacher/assessments', {
+            templateUrl: 'partials/teacher/assessments',
+            controller: 'TeacherAssessmentsCtrl'
+        })
+        .when('/teacher/assessment/:id', {
+            templateUrl: 'partials/teacher/assessmentDetail',
+            controller: 'TeacherAssessmentDetailCtrl'
         })
         .when('/teacher/feedback/:sessionId', {
             templateUrl: 'partials/teacher/feedback',

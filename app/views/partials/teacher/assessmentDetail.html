@@ -1,0 +1,10 @@
+<div ng-include="'partials/navbar'"></div>
+<div class="form-group session-new">
+    <h4>{{assessment.name}}</h4>
+</div>
+<h4>Manage Questions:</h4>
+<table class="table table-striped table-hover table-bordered table-responsive">
+    <tr ng-repeat="question in assessment.questions" ng-click="select(question)">
+        <td>{{ question.text }}</td>
+    </tr>
+</table>
