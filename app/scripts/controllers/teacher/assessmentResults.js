@@ -1,11 +1,11 @@
 angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", "$http", "$io", "$routeParams", function ($scope, $http, $io, $routeParams) {
     $scope.assessment = null;
     $scope.session = null;
-    
+    $scope.assessmentResults = null;
     var getSession = function(){
         $http.get("/api/session/" + $routeParams.id).success(function(session){
             $scope.session = session;
-            getAssessment()
+            getAssessment();
         });
     };
     var getAssessment = function(){
@@ -15,12 +15,36 @@ angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", 
                     $scope.assessment = $scope.session.assessments[i];
                 }
             }
+            getAssessmentResults();
         }
     };
     
+    var getAssessmentResults = function(){
+        $http.get("/api/session/" + $scope.session._id + "/assessment/" + $scope.assessment._id + "/results").success(function(results) {
+            //TODO: Do something interesting with the data.
+/*            var assessmentResults = {};
+            var count = 0;
+            for (var key in results) {
+                count++;
+                var answer = results[key].givenAnswer;
+                if (assessmentResults[answer.text]) {
+                    assessmentResults[answer.text].responses++;
+                } else {
+                    assessmentResults[answer.text] = {responses: 1};
+                }
+
+                assessmentResults[answer.text].percent = function() {
+                    return parseInt(100 * this.responses / count);
+                };
+            }*/
+
+            $scope.assessmentResults = results;
+        });
+    };
+
     $scope.getBackUrl = function(){
         return "/teacher/session/" + $routeParams.id;
     };
-    $io.on("assessmentResultCreated", getSession);
+    $io.on("assessmentResultCreated", getAssessmentResults);
     getSession();
 }]);

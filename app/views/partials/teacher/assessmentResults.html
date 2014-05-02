@@ -1,12 +1,14 @@
 <div ng-include="'partials/navbar'"></div>
 
 <div ng-show="assessmentResults">
-    <table class="table table-striped table-hover table-bordered table-responsive">
-        <tr ng-repeat="answer in currentAssessment().question.answers" ng-class="{correct: answer.correct}">
+   <!-- <table class="table table-striped table-hover table-bordered table-responsive">-->
+    <!--TODO: MAke this pretty!!!-->
+        {{assessmentResults}}
+        <!--<tr ng-repeat="answer in assessmentResults.question.answers" ng-class="{correct: answer.correct}">
             <td>{{ answer.text }}</td>
             <td>{{ assessmentResults[answer.text].percent() || 0 }}%</td>
-        </tr>
-    </table>
+        </tr>-->
+   <!-- </table>-->
 </div>
         
 <div ng-hide="assessmentResults">

@@ -43,7 +43,6 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         $scope.showAssessments = !$scope.showAssessments;
     };
     $scope.issueAssessment = function(assessment) {
-        debugger;
         $http.post("/api/session/" + $scope.session._id + "/assessment/" + assessment._id + "/start").success(function(){
             $location.path("/teacher/session/" + $scope.session._id + "/assessment/" + assessment._id);
         });
