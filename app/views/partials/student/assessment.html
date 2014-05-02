@@ -1,0 +1,13 @@
+<div class="form-group">
+    <div ng-include="'partials/student/waiting'"></div>
+    <div  class="form-group" ng-show="session.started" class="col-md-10">
+        <h2>Teacher Question</h2>
+        <h3>{{ assessment.question.text }}</h3>
+        <table class="table table-striped table-hover table-bordered table-responsive">
+            <tr ng-repeat="answer in assessment.question.answers" ng-click="assessmentAnswerSelect(answer)">
+                <td>{{ answer.text }}</td>
+                <td style="padding: 3px;"><button class="btn btn-xs btn-info" ng-click="assessmentAnswerSubmit(answer)" ng-show="answer === assessmentAnswerSelected">Submit</button></td>
+            </tr>
+        </table>
+    </div>
+</div>

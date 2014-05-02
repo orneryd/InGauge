@@ -1,6 +1,6 @@
 angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$io", function ($scope, $http, $io) {
 
-    $scope.pollResultsCounts = [0, 0, 0];
+    $scope.sessionResultsCounts = [0, 0, 0];
 
     var applyTheme = function(){
         /**
@@ -364,9 +364,9 @@ angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$i
                                 setInterval(function() {
                                     var time = (new Date()).getTime(); // current time
 
-                                    series[0].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 0)], true, true);
-                                    series[1].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 1)], true, true);
-                                    series[2].addPoint([time, pollResultToPercent($scope.pollResultsCounts, 2)], true, true);
+                                    series[0].addPoint([time, pollResultToPercent($scope.sessionResultsCounts, 0)], true, true);
+                                    series[1].addPoint([time, pollResultToPercent($scope.sessionResultsCounts, 1)], true, true);
+                                    series[2].addPoint([time, pollResultToPercent($scope.sessionResultsCounts, 2)], true, true);
                                 }, 5000);
                             }
                         }
@@ -423,10 +423,10 @@ angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$i
     initChart2();
     initChart3();
 
-    var getCurrentPoll = function() {
-        $http.get("/api/poll/active").success(function(poll){
-            if (!poll || poll === 'null') {
-                $scope.pollResultsCounts = [0, 0, 0];
+    var getCurrentSession = function() {
+        $http.get("/api/session/active").success(function(session){
+            if (!session || session === 'null') {
+                $scope.sessionResultsCounts = [0, 0, 0];
             } else {
                 getCurrentPollResults();
             }
@@ -435,15 +435,15 @@ angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$i
 
     var getCurrentPollResults = function() {
         $http.get('api/poll/active/results').success(function(results) {
-            var pollResultsCounts = [0, 0, 0];
+            var sessionResultsCounts = [0, 0, 0];
 
             // Update the data for the first chart
             for (var key in results) {
                 var result = results[key];
-                pollResultsCounts[result.state]++
+                sessionResultsCounts[result.state]++
             }
 
-            $scope.pollResultsCounts = pollResultsCounts;
+            $scope.sessionResultsCounts = sessionResultsCounts;
         });
     };
 
@@ -456,11 +456,11 @@ angular.module('inGuage').controller('ReportsIndexCtrl', ["$scope", "$http", "$i
         }
     };
 
-    $io.on('pollCreated', getCurrentPoll);
-    $io.on('pollClosed', getCurrentPoll);
+    $io.on('pollCreated',  getCurrentSession);
+    $io.on('pollClosed',  getCurrentSession);
     $io.on('pollResultCreated', getCurrentPollResults);
 
-    getCurrentPoll();
+     getCurrentSession();
     getCurrentPollResults();
 
     $http.get("/api/assessment").success(function(results){

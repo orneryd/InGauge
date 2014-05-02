@@ -15,6 +15,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
+    <link rel="stylesheet" href="bower_components/angular-ui/build/angular-ui.min.css" />
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -51,14 +52,21 @@
     <script src="bower_components/angular-socket-io/socket.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <!-- endbower -->
-    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>    
+    <script src="bower_components/angular-ui/build/angular-ui.min.js"></script>
+
     <!-- endbuild -->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/navbar.js"></script>
-        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/register.js"></script>
+        <script src="scripts/controllers/loginHeader.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
         <script src="scripts/controllers/teacher/index.js"></script>
-        <script src="scripts/controllers/student/index.js"></script>
+        <script src="scripts/controllers/teacher/login.js"></script>
+        <script src="scripts/controllers/teacher/session.js"></script>
+        <script src="scripts/controllers/student/session.js"></script>
+        <script src="scripts/controllers/student/login.js"></script>
         <script src="scripts/controllers/reports/index.js"></script>
         <!-- endbuild -->
 </body>

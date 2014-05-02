@@ -21,8 +21,7 @@ angular.module('inGuage', [
             return config;
         },
         responseError: function (response) {
-            debugger;
-            if (response.status === 401) {
+            if (response.status === 401 && $location.path().indexOf("login") === -1) {
                 delete $window.localStorage.token;
                 $location.path("/login");
             }
@@ -32,24 +31,56 @@ angular.module('inGuage', [
 }])
 .config(["$routeProvider", "$locationProvider", "$httpProvider", function ($routeProvider, $locationProvider, $httpProvider){
     $routeProvider
-        .when('/student', {
-            templateUrl: 'partials/student/index',
-            controller: 'StudentIndexCtrl'
+        .when('/login/student', {
+            templateUrl: 'partials/student/login',
+            controller: 'StudentLoginCtrl'
         })
-        .when('/login', {
-            templateUrl: 'partials/login',
-            controller: 'LoginCtrl'
+        .when('/login/teacher', {
+            templateUrl: 'partials/teacher/login',
+            controller: 'TeacherLoginCtrl'
+        })
+        .when('/login/register', {
+            templateUrl: 'partials/register',
+            controller: 'RegisterCtrl'
+        })
+        .when('/student/session/:id', {
+            templateUrl: 'partials/student/session',
+            controller: 'StudentSessionCtrl'
+        })
+        .when('/student/assessment/:sessionId', {
+            templateUrl: 'partials/student/assessment',
+            controller: 'StudentAssessmentCtrl'
+        })
+        .when('/student/feedback/:sessionId', {
+            templateUrl: 'partials/student/feedback',
+            controller: 'StudentFeedbackCtrl'
         })
         .when('/teacher', {
             templateUrl: 'partials/teacher/index',
             controller: 'TeacherIndexCtrl'
         })
+        .when('/teacher/session/:id', {
+            templateUrl: 'partials/teacher/session',
+            controller: 'TeacherSessionCtrl'
+        })
+        .when('/teacher/assessment/:sessionId', {
+            templateUrl: 'partials/teacher/assessment',
+            controller: 'TeacherAssessmentCtrl'
+        })
+        .when('/teacher/feedback/:sessionId', {
+            templateUrl: 'partials/teacher/feedback',
+            controller: 'TeacherFeedbackCtrl'
+        })
         .when('/reports', {
             templateUrl: 'partials/reports/index',
             controller: 'ReportsIndexCtrl'
         })
+        .when("/logout", {
+            templateUrl: 'partials/logout',
+            controller: 'LogoutCtrl'
+        })
         .otherwise({
-            redirectTo: '/login'
+            redirectTo: '/login/student'
         });
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('$authInterceptor');

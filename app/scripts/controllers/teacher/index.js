@@ -1,206 +1,35 @@
-angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$io", "$timeout", function ($scope, $http, $io, $timeout) {
-    $scope.poll;
-    $scope.assessmentResults;
-    $scope.pollNew = {};
-
-    // modes:
-    // pollingMode = 0;
-    // assesmentMode = 1;
-    // resultsMode = 2;
-    $scope.mode = 0;
-
-    $scope.states = {
-        0: 0,
-        1: 0,
-        2: 0
-    };
-    $scope.studentsConnectedCount = 0;
-
-    var init = function() {
-        // Set socket events
-        $io.on('pollResultCreated', getCurrentPollResults);
-        $io.on('pollCreated', getCurrentPoll);
-        $io.on('pollClosed', getCurrentPoll);
-        $io.on('assessmentResultCreated', getCurrentAssessmentResults);
-        $io.on('feedbackResultCreated', getCurrentFeedbackResults);
-
-        $scope.$watch('poll', function() {
-            // Count all distinct action states
-            if ($scope.poll && $scope.poll.actions) {
-                var states = {};
-
-                $scope.poll.actions.forEach(function(element) {
-                    if (!states[element.state]) {
-                        states[element.state] = 0;
-                    }
-
-                    states[element.state]++;
-                });
-
-                $scope.poll.actions.states = states;
-            }
-        });
-
-        getCurrentPoll().success(getCurrentPollResults);
-        getCurrentAssessmentResults();
-        $http.get('/api/assessment/active').success(function(assessment){
-            if (assessment !== "null"){
-                $scope.mode = 2;
-                $scope.assessment = assessment;
-            }
-        });
-        $http.get('/api/question').success(function(questions) {
-            $scope.questions = questions;
+angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$location", function ($scope, $http, $location) {
+    $scope.sessions = null;
+    $scope.newSessionTitle = null;
+    var getSessions = function(){
+        $http.get("/api/session").success(function(sessions){
+            $scope.sessions = sessions;
         });
     };
 
-    // Get the current active poll from the server
-
-    $scope.getPercent = function(val){
-        return parseInt(100 * val);
+    $scope.start = function(session) {
+        $http.post("/api/session/" + session._id + "/start").success(function(){
+            $location.path("/teacher/session/" + session._id);
+        });
     };
-    $scope.startQuestionMode = function(){
-        $scope.mode = 1;
+    
+    $scope.resume = function(session) {
+        $location.path("/teacher/session/" + session._id);
     };
-
-    $scope.returnToPolling = function(){
-        if ($scope.mode === 2){
-            $http.put('/api/assessment/' + $scope.assessment._id).success(function(){
-                $scope.mode = 0;
-                $scope.assessmentResults = null;
-            });
-        } else {
-            $scope.mode = 0;
+    
+    $scope.manage = function(session) {
+        $location.path("/teacher/session/" + session._id + "/manage");
+    };
+    
+    $scope.delete = function(session) {
+        $http.delete("/api/session/" + session._id).success(getSessions);
+    };
+    
+    $scope.createSession = function(){
+        if ($scope.newSessionTitle){
+            $http.post('/api/session', { title: $scope.newSessionTitle }).success(getSessions);
         }
     };
-
-    $scope.selectQuestion = function(q){
-        // console.log("show", arguments, this);
-        if ($scope.lastSelected) {
-            $scope.lastSelected.selected = null;
-        }
-        q.selected = true;
-        $scope.lastSelected = q;
-    };
-
-    $scope.startAssessment = function(question){
-        $http.post('/api/assessment', { question: question }).success(function(assessment){
-            $scope.mode = 2;
-            $scope.assessment = assessment;
-        });
-    };
-
-    $scope.feedbackResults;
-
-    $scope.startFeedback = function(){
-        $http.get('/api/feedback/active').success(function(feedback) {
-            if (feedback !== 'null' && feedback) {
-                $scope.mode = 3;
-                $scope.feedback = feedback;
-            } else {
-                $http.post('/api/feedback').success(function(feedback){
-                    $scope.mode = 3;
-                    $scope.feedback = feedback;
-                });
-            }
-        });
-    };
-
-    $scope.endFeedback = function(){
-        $http.put('/api/feedback/' + $scope.feedback._id).success(function(){
-            $scope.mode = 0;
-        });
-    };
-
-    var getCurrentFeedbackResults = function(){
-        $http.get('/api/feedback/active').success(function(results) {
-            $scope.feedbackResults = results.results;
-        });
-    };
-
-    var getCurrentPoll = function(){
-        return $http.get('/api/poll/active').success(function(poll) {
-            if (poll !== 'null' && poll) {
-                $scope.poll = poll;
-                $scope.pollNew = {};
-                updateFromNow();
-            } else {
-                $scope.poll = null;
-            }
-        });
-    };
-    var getCurrentAssessmentResults = function(){
-        $http.get('/api/assessment/active/results').success(function(results) {
-            var assessmentResults = {};
-            var count = 0;
-            for (var key in results) {
-                count++;
-                var answer = results[key].givenAnswer;
-                if (assessmentResults[answer.text]) {
-                    assessmentResults[answer.text].responses++;
-                } else {
-                    assessmentResults[answer.text] = {responses: 1};
-                }
-
-                assessmentResults[answer.text].percent = function() {
-                    return parseInt(100 * this.responses / count);
-                };
-            }
-
-            $scope.assessmentResults = assessmentResults;
-        });
-    };
-
-    var getCurrentPollResults = function() {
-        $http.get('api/poll/active/results').success(function(results) {
-            var states = {
-                0: 0,
-                1: 0,
-                2: 0
-            };
-            var studentsConnectedCount = 0;
-
-            if (results) {
-                for (var key in results) {
-                    var result = results[key];
-                    if (typeof states[result.state] === 'number') {
-                        states[result.state]++;
-                        studentsConnectedCount++;
-                    }
-                };
-
-                for (key in states) {
-                    states[key] = states[key] / studentsConnectedCount || 0;
-                }
-            }
-
-            $scope.states = states;
-            $scope.studentsConnectedCount = studentsConnectedCount;
-        });
-    };
-
-    // Calculate how long ago started
-    var timeout = null;
-    var updateFromNow = function() {
-        // If called via setTimeout, have to use scope.apply so angular knows
-        if ($scope.poll && $scope.poll.start) {
-            $scope.poll.momentFromNow = moment($scope.poll.start).fromNow();
-        }
-
-        // Call again later
-        $timeout.cancel(timeout);
-        timeout = $timeout(updateFromNow, 60000);
-    };
-
-    // Create a new poll
-    $scope.startNewPoll = function(){
-        $http.post('/api/poll', { title: $scope.pollNew.title }).success(getCurrentPoll);
-    };
-
-    // End the current poll
-    $scope.endPoll = function(){
-        $http.put('/api/poll/' + $scope.poll._id).success(getCurrentPoll);
-    };
-
-    init();
+    
+    getSessions();
 }]);
