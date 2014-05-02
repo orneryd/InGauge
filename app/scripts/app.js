@@ -82,7 +82,7 @@ angular.module('inGuage', [
             templateUrl: 'partials/teacher/feedback',
             controller: 'TeacherFeedbackCtrl'
         })
-        .when('/reports', {
+        .when('/teacher/reports', {
             templateUrl: 'partials/reports/index',
             controller: 'ReportsIndexCtrl'
         })

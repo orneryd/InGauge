@@ -1,12 +1,39 @@
 angular.module('inGuage').controller('TeacherAssessmentDetailCtrl', ["$scope", "$http", "$location", "$routeParams", function ($scope, $http, $location, $routeParams) {
     $scope.assessment = null;
+    $scope.newQuestion = {
+        text: null,
+        answers: []
+    };
     
-    $scope.delete = function(assessment) {
-        $http.delete("/api/assessment/" + assessment._id).success(function(){
-            $location.path("/teacher/assessments")
+    var getAssessment = function(){
+        return $http.get("/api/assessment/" + $routeParams.id).success(function(assessment){
+            $scope.assessment = assessment;
         });
     };
-    $http.get("/api/assessment/" + $routeParams.id).success(function(assessment){
-        $scope.assessment = assessment;
-    });
+    $scope.edit = function(question) {
+        //TODO: add editable questions.
+    };
+    $scope.remove = function(question) {
+        debugger;
+        $http.delete("/api/assessment/" + $scope.assessment._id + "/question/" + question.id).success(getAssessment);
+    };
+    
+    $scope.createQuestion = function(){
+        $http.post("/api/assessment/" + $routeParams.id + "/question", $scope.newQuestion).success(function(){
+            $scope.newQuestion = {
+                text: null,
+                answers: []
+            };
+            getAssessment();
+        });
+    };
+    $scope.addAnswer = function(){
+        $scope.newQuestion.multiChoice = true;
+        $scope.newQuestion.answers.push({
+            text: null,
+            correct: false
+        });
+    };
+    
+    getAssessment();
 }]);

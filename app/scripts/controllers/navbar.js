@@ -7,8 +7,8 @@ angular.module('inGuage').controller('NavbarCtrl', ["$scope", "$location", "$win
     };
     
     $scope.menu = [{
-        'title': 'Dashboard',
-        'link': '/dashboard'
+        'title': 'Reports',
+        'link': '/teacher/reports'
     },{
         'title': 'Logout',
         'link': '/logout'

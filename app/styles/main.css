@@ -124,9 +124,25 @@ body {
     opacity: 0;
     font-size: 84px;
 }
+
+.engagement-container {
+    width: 100%;
+    height: 250px;
+    margin: 20px 0;
+}
 .fade-in {
     opacity: 1;
 }
 .form-control.invalid {
     border: solid red 1px;
+}
+@media screen and (max-width: 768px) {
+    .engagement-container {
+        height: 150px;
+        margin: 10px 0;
+    }
+    .states_2,
+    .states_1 {
+        font-size: 24px;
+    }
 }

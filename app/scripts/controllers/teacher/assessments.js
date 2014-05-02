@@ -17,7 +17,7 @@ angular.module('inGuage').controller('TeacherAssessmentsCtrl', ["$scope", "$http
     
     $scope.createAssessment = function(){
         if ($scope.newAssessmentName){
-            $http.post('/api/assessment', { title: $scope.newAssessmentName }).success(getAssessments);
+            $http.post('/api/assessment', { name: $scope.newAssessmentName }).success(getAssessments);
         }
     };
 

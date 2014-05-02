@@ -1,23 +1,23 @@
 <div ng-include="'partials/navbar'"></div>
 <div class="form-group session-existing">
     <h4>Class Engagement:</h4>
-    <div style="width: 100%; height: 250px; margin: 20px 0;">
+    <div class="engagement-container">
         <div class="states_2 pull-left" ng-class="{'fade-in': states[2]}">
-            <div>{{ getPercent(states[2]) }}%</div>
+            <span>{{ getPercent(states[2]) }}%</span>
         </div>
         <div class="states_1 pull-right" ng-class="{'fade-in': states[1]}">
-            <div>{{ getPercent(states[1]) }}%</div>
+            <span>{{ getPercent(states[1]) }}%</span>
         </div>
     </div>
     <div style="clear: both;"></div>
     <h2 style="display: inline;position: relative;top: 7px;">Active Session: {{ session.title }}</h2>
-    <button style="margin-left: 30px;" class="btn btn-sm btn-warning" ng-click="endSession()">End</button>
     <h4>Session Code: {{ session.code }}</h4>
     <h4>Started: {{ session.momentFromNow }}</h4>
 </div>
 <div style="margin: 20px 0;" class="form-group btn-group pull-right">
-    <button class="btn btn-default" ng-click="startQuestionMode()">Assessment</button>
-    <button class="btn btn-default" ng-click="startFeedback()">Feedback</button>
-    <a href="/teacher" class="btn btn-default">Return</a>
+    <button style="margin-left: 30px;" class="btn btn-sm btn-warning" ng-click="endSession()">End</button>
+    <button class="btn btn-sm btn-default" ng-click="startQuestionMode()">Assessment</button>
+    <button class="btn btn-sm btn-default" ng-click="startFeedback()">Feedback</button>
+    <a href="/teacher" class="btn btn-sm btn-default">Return</a>
     <div style="clear: both"></div>
 </div>

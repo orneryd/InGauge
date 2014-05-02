@@ -2,9 +2,22 @@
 <div class="form-group session-new">
     <h4>{{assessment.name}}</h4>
 </div>
+<div class="form-group session-new">
+    <h4>Create an Question:</h4>
+    <input class="form-control" style="height: 30px;position: relative;top: 1px;" placeholder="Question text" ng-model="newQuestion.text" />
+    <div class="form-group" ng-repeat="a in newQuestion.answers">
+        <input class="form-inline" placeholder="Answer Text" ng-model="a.text">
+        <span>
+            <input type="checkbox" class="form-inline" placeholder="Answer Text" ng-model="a.correct"> Correct answer?
+        </span>
+    </div>
+    <button class="btn btn-sm btn-info" ng-click="addAnswer()"> +1 answer</button>
+    <button class="btn btn-sm btn-info" ng-click="createQuestion()">Create</button>
+</div>
 <h4>Manage Questions:</h4>
 <table class="table table-striped table-hover table-bordered table-responsive">
     <tr ng-repeat="question in assessment.questions" ng-click="select(question)">
         <td>{{ question.text }}</td>
+        <td><button ng-click="remove(question)" class="btn btn-danger btn-sm">Remove</button></td> 
     </tr>
 </table>
