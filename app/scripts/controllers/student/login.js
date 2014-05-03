@@ -1,6 +1,6 @@
 angular.module('inGuage').controller('StudentLoginCtrl', ["$scope", "$window", "$http", "$location", function ($scope, $window, $http, $location){
     $scope.user = {
-        studentId: null,
+        student: null,
         code: null
     };
     $scope.login = function () {

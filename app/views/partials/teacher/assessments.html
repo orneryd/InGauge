@@ -6,8 +6,8 @@
 </div>
 <h4>Manage Assessments:</h4>
 <table class="table table-striped table-hover table-bordered table-responsive">
-    <tr ng-repeat="assessment in assessments" ng-click="select(assessment)">
-        <td>{{ assessment.name }}</td>
-        <td><button class="btn btn-info btn-xs" ng-click="manage(assessment)">Manage</button></td>
+    <tr ng-repeat="a in assessments" ng-click="select(a)">
+        <td>{{ a.name }}</td>
+        <td><button class="btn btn-info btn-xs" ng-click="manage(a)">Manage</button></td>
     </tr>
 </table>

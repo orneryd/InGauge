@@ -43,17 +43,17 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         $scope.showAssessments = !$scope.showAssessments;
     };
     $scope.issueAssessment = function(assessment) {
-        $http.post("/api/session/" + $scope.session._id + "/assessment/" + assessment._id + "/start").success(function(){
-            $location.path("/teacher/session/" + $scope.session._id + "/assessment/" + assessment._id);
+        $http.post("/api/session/" +  $routeParams.id + "/assessment/" + assessment._id + "/start").success(function(){
+            $location.path("/teacher/session/" +  $routeParams.id + "/assessment/" + assessment._id);
         });
     };
     
     $scope.startFeedback = function(){
-        $location.path("/teacher/session/" + $scope.session._id + "/feedback");
+        $location.path("/teacher/session/" +  $routeParams.id + "/feedback");
     };
     // End the current session
     $scope.endSession = function(){
-        $http.put('/api/session/' + $scope.session._id).success(function(){
+        $http.put('/api/session/' +  $routeParams.id).success(function(){
             $location.path("/teacher");
         });
     };
@@ -63,7 +63,8 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
     };
     
     $io.on('sessionResultCreated', function() {
-        $http.get("api/session/" + $scope.session._id + "/results").success(function(results) {
+        debugger;
+        $http.get("api/session/" +  $routeParams.id + "/results").success(function(results) {
             var states = {
                 0: 0,
                 1: 0,

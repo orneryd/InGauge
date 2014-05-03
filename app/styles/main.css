@@ -136,6 +136,7 @@ body {
 .form-control.invalid {
     border: solid red 1px;
 }
+
 @media screen and (max-width: 768px) {
     .engagement-container {
         height: 150px;

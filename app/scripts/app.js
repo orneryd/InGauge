@@ -49,7 +49,7 @@ angular.module('inGuage', [
             templateUrl: 'partials/student/session',
             controller: 'StudentSessionCtrl'
         })
-        .when('/student/assessment/:sessionId', {
+        .when('/student/session/:sessionId/assessment/:sessionId', {
             templateUrl: 'partials/student/assessment',
             controller: 'StudentAssessmentCtrl'
         })

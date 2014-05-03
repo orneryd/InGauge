@@ -2,10 +2,10 @@
 <div style="max-width: 400px;  margin: 0 auto;" ng-controller="StudentLoginCtrl">
     <form class="form-group" style="margin-top: 40px;" ng-submit="login()">
         <div class="form-group">
-            <input class="form-control" ng-model="user.studentId" type="text" name="studentId" placeholder="Student ID" />
+            <input class="form-control" ng-model="user.student" type="text" name="studentId" placeholder="Student ID" />
         </div>
         <div class="form-group">
-            <input class="form-control" ng-model="user.code" type="password" name="code" placeholder="Session Code (ABC123)" />
+            <input class="form-control" ng-model="user.code" type="text" name="code" placeholder="Session Code (ABC123)" />
         </div>
         <input class="form-control btn btn-primary" type="submit" value="Submit" />
     </form>

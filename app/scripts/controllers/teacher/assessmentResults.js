@@ -1,4 +1,4 @@
-angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", "$http", "$io", "$routeParams", function ($scope, $http, $io, $routeParams) {
+angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", "$http", "$io", "$routeParams", "$location", function ($scope, $http, $io, $routeParams, $location) {
     $scope.assessment = null;
     $scope.session = null;
     $scope.assessmentResults = null;
@@ -42,8 +42,10 @@ angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", 
         });
     };
 
-    $scope.getBackUrl = function(){
-        return "/teacher/session/" + $routeParams.id;
+    $scope.endAssessment = function(){
+        $http.put("/api/session/" + $routeParams.id + "/assessment/" + $scope.assessment._id).success(function(){
+            $location.path("/teacher/session/" + $routeParams.id);
+        });
     };
     $io.on("assessmentResultCreated", getAssessmentResults);
     getSession();
