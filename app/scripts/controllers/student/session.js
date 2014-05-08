@@ -36,16 +36,16 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
         });
     };
 
-    $io.on("sessionStarted", getSession);
+    $io.on("sessionstarted", getSession);
 
-    $io.on("sessionClosed", function(){
+    $io.on("sessionclosed", function(){
         $scope.session = null;
     });
 
-    $io.on('assessmentStarted', function(id){
+    $io.on('assessmentinstancestarted', function(id){
         $location.path("/student/session/" + $routeParams.id + "/assessment/" + id);
     });
-    $io.on('feedbackCreated', function(id){
+    $io.on('feedbackstarted', function(id){
         //TODO: route to feedback
     });
 

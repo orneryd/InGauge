@@ -108,4 +108,8 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         $scope.session = res.results;
         updateFromNow();
     });
+    $http.get("/api/session/" + $routeParams.id + "/assessmentInstance").success(function(res){
+        $scope.assessments = res.results;
+        updateFromNow();
+    });
 }]);

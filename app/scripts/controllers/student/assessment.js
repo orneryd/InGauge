@@ -18,12 +18,12 @@ angular.module('inGuage').controller('StudentAssessmentCtrl', ["$scope", "$http"
             student: "",
             result: answer 
         };
-        $http.post('/api/session/' + $routeParams.sessionId + "/assessment/" + $scope.assessment._id, assessmentResult).success(function(){
+        $http.post('/api/session/' + $routeParams.sessionId + "/assessmentResult", assessmentResult).success(function(){
             $scope.assessment = null;
         });
     };
     
-    $http.get('/api/assessment/' + $routeParams.assessmentId).success(function(assessment) {
+    $http.get('/api/assessmentInstance/' + $routeParams.assessmentId).success(function(assessment) {
         $scope.assessment = assessment;
     });
 }]);

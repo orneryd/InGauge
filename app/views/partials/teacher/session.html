@@ -24,8 +24,8 @@
 <div style="clear:both;"></div>
 <div id="assessments" ng-show="showAssessments">
     <table class="table table-bordered table-striped table-responsive table-hover">
-        <tr ng-repeat="a in session.assessments">
-            <td>{{a.name}}</td>
+        <tr ng-repeat="a in assessments">
+            <td>{{a.title}}</td>
             <td><button class="btn btn-sm btn-info" ng-click="issueAssessment(a)">Issue</button></td>
         </tr>
     </table>
