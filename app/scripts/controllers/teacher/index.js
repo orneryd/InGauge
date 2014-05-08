@@ -2,8 +2,8 @@ angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$l
     $scope.sessions = null;
     $scope.newSessionTitle = null;
     var getSessions = function(){
-        $http.get("/api/session").success(function(sessions){
-            $scope.sessions = sessions;
+        $http.get("/api/session").success(function(res){
+            $scope.sessions = res.results;
         });
     };
 
