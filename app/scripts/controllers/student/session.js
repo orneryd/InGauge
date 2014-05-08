@@ -1,21 +1,20 @@
-angular.module('inGuage').controller('StudentSessionCtrl', ["$scope", "$http", "$io", "$timeout", "$routeParams", "$location", "$window", function ($scope, $http, $io, $timeout, $routeParams, $location, $window) {
+angular.module('inGuage').controller('StudentSessionCtrl', ["$scope", "$http", "$io", "$timeout", "$routeParams", "$location", "$window", '$identity', 
+function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $identity) {
     
-    var webToken = jwt.WebTokenParser.parse($window.localStorage.token);
-    var payload = JSON.parse(jwt.base64urldecode(webToken.payloadSegment));
-    $scope.student = payload.student;
+    $scope.student = $identity.getFullName();
 
     $scope.session = null;
     $scope.currentState = 0;
     var getSession = function(){
-        $http.get('/api/session/' + $routeParams.id).success(function(session) {
-            $scope.session = session;
+        $http.get('/api/session/' + $routeParams.id).success(function(res) {
+            $scope.session = res.results;
         });
     };
     
     var startWaiting = function(){
         resetState = $timeout(function(){
             $scope.currentState = 0;
-            $http.post('/api/session/' + $routeParams.id, { student: $scope.student, state: 0 });
+            $http.post('/api/session/' + $routeParams.id + "/sessionResult", { student: $scope.student, state: 0 });
         }, 7000);
         resetButtons = $timeout(function(){
             $scope.disableClick = false;
@@ -31,7 +30,7 @@ angular.module('inGuage').controller('StudentSessionCtrl', ["$scope", "$http", "
             resetState = null;
             resetButtons = null;
         }
-        $http.post('/api/session/' + $routeParams.id, { student: $scope.student, state: state }).success(function(){
+        $http.post('/api/session/' + $routeParams.id + "/sessionResult", { student: $scope.student, state: state }).success(function(){
             $scope.currentState = state;
             startWaiting();
         });

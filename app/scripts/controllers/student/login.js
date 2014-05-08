@@ -4,7 +4,7 @@ angular.module('inGuage').controller('StudentLoginCtrl', ["$scope", "$window", "
         code: null
     };
     $scope.login = function () {
-        $http.post('/joinSession', $scope.user)
+        $http.post('/join', $scope.user)
             .success(function (data, status, headers, config) {
                 $window.localStorage.token = data.token;
                 $location.path("/student/session/" + data.sessionId);

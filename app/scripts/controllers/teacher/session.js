@@ -43,7 +43,7 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         $scope.showAssessments = !$scope.showAssessments;
     };
     $scope.issueAssessment = function(assessment) {
-        $http.post("/api/session/" +  $routeParams.id + "/assessment/" + assessment._id + "/start").success(function(){
+        $http.post("/api/assessmentInstance/" + assessment._id + "/start").success(function(){
             $location.path("/teacher/session/" +  $routeParams.id + "/assessment/" + assessment._id);
         });
     };
@@ -61,10 +61,22 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
     $scope.getPercent = function(val){
         return parseInt(100 * val);
     };
-    
-    $io.on('sessionResultCreated', function() {
-        debugger;
-        $http.get("api/session/" +  $routeParams.id + "/results").success(function(results) {
+    var resultsByStudent = function(resultsArray){
+        var students = {};
+        if (!resultsArray ) {
+            return students;
+        }
+        angular.forEach(resultsArray, function(item){
+            if (!students[item.student]) {
+                students[item.student] = [];
+            }
+            students[item.student].push(item);
+        });
+        return students;
+    };
+    $io.on('sessionresultcreated', function() {
+        $http.get("api/session/" +  $routeParams.id + "/sessionResult").success(function(res) {
+            var results = resultsByStudent(res.results);
             var states = {
                 0: 0,
                 1: 0,
@@ -74,7 +86,8 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
 
             if (results) {
                 for (var key in results) {
-                    var result = results[key];
+                    var arr = results[key];
+                    var result = arr[arr.length - 1];
                     if (typeof states[result.state] === 'number') {
                         states[result.state]++;
                         studentsConnectedCount++;
@@ -91,8 +104,8 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         });
     });
     
-    $http.get("/api/session/" + $routeParams.id).success(function(session){
-        $scope.session = session;
+    $http.get("/api/session/" + $routeParams.id).success(function(res){
+        $scope.session = res.results;
         updateFromNow();
     });
 }]);
