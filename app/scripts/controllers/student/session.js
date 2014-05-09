@@ -6,7 +6,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
     $scope.session = null;
     $scope.currentState = 0;
     var getSession = function(){
-        $http.get('/api/session/' + $routeParams.id).success(function(res) {
+        $http.get('/api/session/' + $routeParams.sessionId).success(function(res) {
             $scope.session = res.results;
         });
     };
@@ -14,7 +14,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
     var startWaiting = function(){
         resetState = $timeout(function(){
             $scope.currentState = 0;
-            $http.post('/api/session/' + $routeParams.id + "/sessionResult", { student: $scope.student, state: 0 });
+            $http.post('/api/session/' + $routeParams.sessionId + "/sessionResult", { student: $scope.student, state: 0 });
         }, 7000);
         resetButtons = $timeout(function(){
             $scope.disableClick = false;
@@ -30,7 +30,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
             resetState = null;
             resetButtons = null;
         }
-        $http.post('/api/session/' + $routeParams.id + "/sessionResult", { student: $scope.student, state: state }).success(function(){
+        $http.post('/api/session/' + $routeParams.sessionId + "/sessionResult", { student: $scope.student, state: state }).success(function(){
             $scope.currentState = state;
             startWaiting();
         });
@@ -43,7 +43,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
     });
 
     $io.on('assessmentinstancestarted', function(id){
-        $location.path("/student/session/" + $routeParams.id + "/assessment/" + id);
+        $location.path("/student/session/" + $routeParams.sessionId + "/assessment/" + id);
     });
     $io.on('feedbackstarted', function(id){
         //TODO: route to feedback

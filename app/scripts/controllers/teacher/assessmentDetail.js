@@ -6,7 +6,7 @@ angular.module('inGuage').controller('TeacherAssessmentDetailCtrl', ["$scope", "
     };
     
     var getAssessment = function(){
-        return $http.get("/api/assessment/" + $routeParams.id).success(function(assessment){
+        return $http.get("/api/assessment/" + $routeParams.sessionId).success(function(assessment){
             $scope.assessment = assessment;
         });
     };
@@ -18,7 +18,7 @@ angular.module('inGuage').controller('TeacherAssessmentDetailCtrl', ["$scope", "
     };
     
     $scope.createQuestion = function(){
-        $http.post("/api/assessment/" + $routeParams.id + "/question", $scope.newQuestion).success(function(){
+        $http.post("/api/assessment/" + $routeParams.sessionId + "/question", $scope.newQuestion).success(function(){
             $scope.newQuestion = {
                 text: null,
                 answers: []

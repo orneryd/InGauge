@@ -2,7 +2,7 @@ angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", 
     $scope.assessmentResults = null;
 
     var getAssessmentResults = function(){
-        $http.get("/api/session/" + $scope.session._id + "/assessmentResults").success(function(res) {
+        $http.get("/api/session/" + $routeParams.sessionId + "/assessmentResult").success(function(res) {
              var assessmentResults = {};
              var count = 0;
   
@@ -28,9 +28,10 @@ angular.module('inGuage').controller('TeacherAssessmentResultsCtrl', ["$scope", 
 
     $scope.endAssessment = function(){
         $http.post("/api/assessmentInstance/" + $routeParams.assessmentId + "/end").success(function(){
-            $location.path("/teacher/session/" + $routeParams.id);
+            $location.path("/teacher/session/" + $routeParams.sessionId);
         });
     };
 
-    $io.on("assessmentResultCreated", getAssessmentResults);
+    $io.on("assessmentresultcreated", getAssessmentResults);
+    getAssessmentResults();
 }]);

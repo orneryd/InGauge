@@ -44,16 +44,16 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
     };
     $scope.issueAssessment = function(assessment) {
         $http.post("/api/assessmentInstance/" + assessment._id + "/start").success(function(){
-            $location.path("/teacher/session/" +  $routeParams.id + "/assessment/" + assessment._id);
+            $location.path("/teacher/session/" +  $routeParams.sessionId + "/assessment/" + assessment._id);
         });
     };
     
     $scope.startFeedback = function(){
-        $location.path("/teacher/session/" +  $routeParams.id + "/feedback");
+        $location.path("/teacher/session/" +  $routeParams.sessionId + "/feedback");
     };
     // End the current session
     $scope.endSession = function(){
-        $http.put('/api/session/' +  $routeParams.id).success(function(){
+        $http.put('/api/session/' +  $routeParams.sessionId).success(function(){
             $location.path("/teacher");
         });
     };
@@ -75,7 +75,7 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         return students;
     };
     $io.on('sessionresultcreated', function() {
-        $http.get("api/session/" +  $routeParams.id + "/sessionResult").success(function(res) {
+        $http.get("api/session/" +  $routeParams.sessionId + "/sessionResult").success(function(res) {
             var results = resultsByStudent(res.results);
             var states = {
                 0: 0,
@@ -104,11 +104,11 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         });
     });
     
-    $http.get("/api/session/" + $routeParams.id).success(function(res){
+    $http.get("/api/session/" + $routeParams.sessionId).success(function(res){
         $scope.session = res.results;
         updateFromNow();
     });
-    $http.get("/api/session/" + $routeParams.id + "/assessmentInstance").success(function(res){
+    $http.get("/api/session/" + $routeParams.sessionId + "/assessmentInstance").success(function(res){
         $scope.assessments = res.results;
         updateFromNow();
     });

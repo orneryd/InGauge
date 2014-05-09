@@ -11,10 +11,10 @@ angular.module('inGuage').controller('TeacherSessionDetailCtrl', ["$scope", "$ht
         return ret;
     };
     var getSession = function(){
-        $http.get("/api/session/" + $routeParams.id).success(function(res){
+        $http.get("/api/session/" + $routeParams.sessionId).success(function(res){
             $scope.session = res.results;
         });
-        $http.get("/api/session/"+ $routeParams.id + "/assessmentInstance").success(function(res){
+        $http.get("/api/session/"+ $routeParams.sessionId + "/assessmentInstance").success(function(res){
             $scope.assessmentInstances = res.results;
             assessmentsById = arrayToObj(res.results, "assessmentId");
         });

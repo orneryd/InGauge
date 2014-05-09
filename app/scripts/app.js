@@ -45,15 +45,15 @@ angular.module('inGuage', [
             controller: 'RegisterCtrl'
         })
         /* Student Routes */
-        .when('/student/session/:id', {
+        .when('/student/session/:sessionId', {
             templateUrl: 'partials/student/session',
             controller: 'StudentSessionCtrl'
         })
-        .when('/student/session/:sessionId/assessment/:sessionId', {
+        .when('/student/session/:sessionId/assessment/:assessmentId', {
             templateUrl: 'partials/student/assessment',
             controller: 'StudentAssessmentCtrl'
         })
-        .when('/student/feedback/:sessionId', {
+        .when('/student/session/:sessionId/feedback/:feedbackId', {
             templateUrl: 'partials/student/feedback',
             controller: 'StudentFeedbackCtrl'
         })
@@ -62,15 +62,15 @@ angular.module('inGuage', [
             templateUrl: 'partials/teacher/index',
             controller: 'TeacherIndexCtrl'
         })
-        .when('/teacher/session/:id', {
+        .when('/teacher/session/:sessionId', {
             templateUrl: 'partials/teacher/session',
             controller: 'TeacherSessionCtrl'
         })
-        .when('/teacher/session/:id/assessment/:assessmentId', {
+        .when('/teacher/session/:sessionId/assessment/:assessmentId', {
             templateUrl: 'partials/teacher/assessmentResults',
             controller: 'TeacherAssessmentResultsCtrl'
         })
-        .when('/teacher/session/:id/manage', {
+        .when('/teacher/session/:sessionId/manage', {
             templateUrl: 'partials/teacher/sessionDetail',
             controller: 'TeacherSessionDetailCtrl'
         })
@@ -78,7 +78,7 @@ angular.module('inGuage', [
             templateUrl: 'partials/teacher/assessments',
             controller: 'TeacherAssessmentsCtrl'
         })
-        .when('/teacher/assessment/:id', {
+        .when('/teacher/assessment/:sessionId', {
             templateUrl: 'partials/teacher/assessmentDetail',
             controller: 'TeacherAssessmentDetailCtrl'
         })

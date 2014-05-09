@@ -137,6 +137,10 @@ body {
     border: solid red 1px;
 }
 
+.table>tbody>tr>td.selected {
+    background-color: #5cb85c;
+}
+
 @media screen and (max-width: 768px) {
     .engagement-container {
         height: 150px;
