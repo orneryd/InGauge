@@ -35,7 +35,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $identity) {
         }
         var assessmentResult = { 
             assessmentId: $routeParams.assessmentId,
-            questionId: $scope.currentQuestion.id,
+            questionId: $scope.currentQuestion._id,
             student: $identity.getFullName(),
             result: $scope.selectedAnswer 
         };
