@@ -1,0 +1,14 @@
+<div ng-include="'partials/studentNavbar'"></div>
+<div class="form-group">
+    <div ng-include="'partials/student/waiting'"></div>
+    <div style="margin: 10px auto;max-width: 300px" class="form-group" ng-show="session.start">
+        <button style="height: 170px" class="btn btn-lg btn-danger btn-block" ng-disabled="disableClick" ng-click="sendAction(2)">I don't get it</button>
+        <button style="height: 170px" class="btn btn-lg btn-success btn-block" ng-disabled="disableClick" ng-click="sendAction(1)">I Got it</button>
+        <div style="font-size: 12px;padding: 3px; text-align: center" class="form-group">
+            <span for="student-name">Student:</span>
+            <span id="student-name">{{student}}</span>&nbsp;|
+            <span for="session-name">Session:</span>
+            <span id="session-name">{{session.title}}</span>
+        </div>
+    </div>
+</div>

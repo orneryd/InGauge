@@ -4,74 +4,86 @@ var mongoose = require('mongoose'),
     http = require('http'),
     q = require("q"),
     moment = require("moment"),
-    logic = require("./logic"),
     entities = {
-        question: mongoose.model('question'),
-        student: mongoose.model('student'),
-        poll: mongoose.model('poll'),
         assessment: mongoose.model('assessment'),
-        feedback: mongoose.model('feedback')
+        assessmentresult: mongoose.model('assessmentResult'),
+        assessmentinstance: mongoose.model('assessmentInstance'),
+        feedback: mongoose.model('feedback'),
+        feedbackresult: mongoose.model('feedbackResult'),
+        question: mongoose.model('question'),
+        session: mongoose.model('session'),
+        sessionresult: mongoose.model('sessionResult')
     };
+
 /**
  * Get awesome things
  */
 
-exports.get = function(req, res) {
+function _getSupportedType(req, res){
     var type = req.params.type.toLowerCase();
-    var callback = function(err, results) {
-        if (!err) {
-            return res.json(results);
-        } else {
-            return res.send(err);
-        }
-    };
-    if(req.params.id){
-        entities[type].findOne({_id: req.params.id}, callback);
-    } else {
-        entities[type].find(callback);
+    if (!entities[type]){
+        res.send(404, "type not supported");
+        return null;
     }
+    return entities[type];
+}
+
+var _getQuery = function(req){
+    var query = {
+        accountId: req.user.accountId,
+        userId: req.user.userId
+    };
+    if (req.params.sessionId){
+        query.sessionId = req.params.sessionId;
+    }
+    if (req.params.id){
+        query._id = req.params.id;
+    }
+    return query;
 };
 
-exports.getActive = function(req, res) {
-    var type = req.params.type.toLowerCase();
-    entities[type].findOne({ end: null }, function(err, results) {
+var get = function(req, res) {
+    var type = _getSupportedType(req, res);
+    if (!type) return;
+    var method = req.params.id ? "findOne" : "find";
+    var foo = _getQuery(req, res);
+    type[method](foo, function(err, results) {
         if (!err) {
-            return res.json(results);
+            return res.json({ results: results });
         } else {
-            return res.send(err);
+            return res.send({ error: err });
         }
     });
 };
 
-exports.getResults = function(req, res) {
-    var type = req.params.type.toLowerCase();
-    entities[type].findOne({ _id: req.params.id }, function(err, entity) {
+var getQuestions = function(req, res) {
+    var foo = _getQuery(req, res);
+    foo.assessmentId = req.params.assessmentId;
+    entities.question.find(foo, function(err, results) {
         if (!err) {
-            return res.json(logic.convertToResults(entity));
+            return res.json({ results: results });
         } else {
-            return res.send(err);
-        }
-    });
-};
-exports.getActiveResults = function(req, res) {
-    var type = req.params.type.toLowerCase();
-    entities[type].findOne({ end: null }, function(err, entity) {
-        if (!err) {
-            return res.json(logic.convertToResults(entity));
-        } else {
-            return res.send(err);
+            return res.send({ error: err });
         }
     });
 };
 
-exports.post = function(req, res) {
-    var type = req.params.type.toLowerCase();
+var post = function(req, res) {
     var deferred = q.defer();
-    req.body.start = moment.utc();
-    entities[type].create(req.body, function(err, entity){
+    var type = _getSupportedType(req, res);
+    req.body.accountId = req.user.accountId;
+    req.body.userId = req.user.userId;
+    if (req.params.sessionId){
+        req.body.sessionId = req.params.sessionId;
+    }
+    type.create(req.body, function(err, entity){
         if (!err) {
-            deferred.resolve(type, entity._id);
-            return res.send(201, entity);
+            deferred.resolve({ 
+                sessionId: req.body.sessionId, 
+                type: req.params.type.toLowerCase(), 
+                id: entity._id
+            });
+            return res.send(201, entity._id);
         } else {
             deferred.reject(err);
             return res.send(err);
@@ -80,23 +92,15 @@ exports.post = function(req, res) {
     return deferred.promise;
 };
 
-exports.postResult = function(req, res) {
-    var type = req.params.type.toLowerCase();
+var postSession = function(req, res){
     var deferred = q.defer();
-    req.body.created = moment.utc();
-    entities[type].update({
-        _id: req.params.id,
-        end: null
-    },{
-        $push: {
-            results : req.body
-        }
-    },{
-        upsert: true
-    }, function(err){
+    req.body.userId = req.user.userId;    
+    req.body.accountId = req.user.accountId;
+    req.body.code = Math.random().toString(36).slice(12);
+    entities.session.create(req.body, function(err, session){
         if (!err) {
-            deferred.resolve(type + "Result", "active");
-            return res.send(200);
+            deferred.resolve({ type: "session", id: session._id });
+            return res.send(201, session._id);
         } else {
             deferred.reject(err);
             return res.send(err);
@@ -105,22 +109,67 @@ exports.postResult = function(req, res) {
     return deferred.promise;
 };
 
-exports.put = function(req, res) {
-    var type = req.params.type.toLowerCase();
+var _save = function(entity, type, deferred, res){
+    entity.save(function(err) {
+        if (!err) {
+            deferred.resolve({ 
+                sessionId: entity.sessionId || entity._id, 
+                type: type.toLowerCase(), 
+                id: entity._id
+            });
+            return res.send(204);
+        } else {
+            deferred.reject(err);
+            return res.send(err);
+        }
+    });
+};
+
+var start = function(req, res) {
     var deferred = q.defer();
-    entities[type].findOne({_id: req.params.id}, function(err, entity){
-        if (err) { return next(err); }
+    var type = _getSupportedType(req, res);
+    type.findOne(_getQuery(req, res), function(err, entity){
+        if (err) { return res.send(err); }
+        entity.start = moment.utc();
+        _save(entity, req.params.type, deferred, res);
+    });
+    return deferred.promise;
+};
+
+var end = function(req, res) {
+    var deferred = q.defer();
+    var type = _getSupportedType(req, res);
+    type.findOne(_getQuery(req, res), function(err, entity){
+        if (err) { return res.send(err); }
         entity.end = moment.utc();
-        entity.save(function(err) {
-            if (!err) {
-                deferred.resolve(type, entity._id);
-                return res.send(204);
-            } else {
-                deferred.reject(err);
-                return next(err);
-            }
-        });
+        _save(entity, req.params.type, deferred, res);
     });
     return deferred.promise;
 };
 
+var del = function(req, res) {
+    var deferred = q.defer();
+    var type = _getSupportedType(req, res);
+    if (req.user.type == 0 || !type){
+        return res.send(401);
+    }
+    type.remove({_id: req.params.id}, function(err){
+        if (!err) {
+            deferred.resolve(req.params.type);
+            return res.send(204);
+        } else {
+            deferred.reject(err);
+            return res.send(err);
+        }
+    });
+    return deferred.promise;
+};
+
+
+exports.get = get;
+exports.getQuestions = getQuestions;
+exports.post = post;
+exports.postSession = postSession;
+exports.start = start;
+exports.end = end;
+exports.delete = del;

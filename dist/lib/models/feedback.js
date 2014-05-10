@@ -1,16 +1,17 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    feedbackResultSchema = require('./feedbackResult'),
     Schema = mongoose.Schema;
     
 /**
  * Thing Schema
  */
 var feedbackSchema = new Schema({
+    accountId: String,
+    userId: String,
+    sessionId: String,
     start: Date,
-    end: Date,
-    results: [feedbackResultSchema]
+    end: Date
 });
 
 /**

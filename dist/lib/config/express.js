@@ -2,6 +2,7 @@
 
 var express = require('express'),
     path = require('path'),
+    expressJwt = require('express-jwt'),
     config = require('./config');
 
 /**
@@ -40,6 +41,8 @@ module.exports = function(app) {
     app.use(express.json());
     app.use(express.urlencoded());
     app.use(express.methodOverride());
+    // We are going to protect /api routes with JWT
+    app.use('/api', expressJwt({secret: "shivakaminisomakandarkram"}));
     // Router (only error handlers should come after this)
     app.use(app.router);
   });

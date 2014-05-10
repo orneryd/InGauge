@@ -74,7 +74,7 @@ angular.module('inGuage').controller('TeacherSessionCtrl', ["$scope", "$http", "
         });
         return students;
     };
-    $io.on('sessionresultcreated', function() {
+    $io.on('sessionresult:created', function() {
         $http.get("api/session/" +  $routeParams.sessionId + "/sessionResult").success(function(res) {
             var results = resultsByStudent(res.results);
             var states = {

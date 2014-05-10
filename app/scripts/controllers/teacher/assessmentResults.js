@@ -48,5 +48,5 @@ function ($scope, $http, $io, $routeParams, $location) {
         });
     });
 
-    $io.on("assessmentresultcreated", getAssessmentResults);
+    $io.on("assessmentresult:created", getAssessmentResults);
 }]);

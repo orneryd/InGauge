@@ -13,7 +13,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $identity) {
             $scope.noMoreQuestions = true;
         }
     };
-    $io.on("assessmentinstanceedned", function(){
+    $io.on("assessmentinstance:ended", function(){
         $location.path("/student/session/" + $routeParams.sessionId)
     });
  

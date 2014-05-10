@@ -1,0 +1,8 @@
+<div class="form-group form-inline" ng-controller="LoginHeaderCtrl">
+    <div style="width: 230px;margin: 0 auto">
+        <div class="btn-group btn-group-lg">
+            <a href="/login/student" ng-class="{'btn-info': isActive('student'), 'btn-default': !isActive('student')}" class="btn btn-lg">Student</a>
+            <a href="/login/teacher" ng-class="{'btn-info': isActive('teacher') || isActive('register'), 'btn-default': !isActive('teacher')}" class="btn btn-lg">Teacher</a>
+        </div>
+    </div>
+</div>

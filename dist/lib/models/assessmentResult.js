@@ -7,12 +7,14 @@ var mongoose = require('mongoose'),
 /**
  * Thing Schema
  */
-var questionSchema = new Schema({
+var assessmentResultSchema = new Schema({
     accountId: String,
     userId: String,
+    sessionId: String,
     assessmentId: String,
-    text: String,
-    answers: [answerSchema]
+    questionId: String,
+    student: String,
+    result: answerSchema
 });
 
-mongoose.model('question', questionSchema);
+mongoose.model('assessmentResult', assessmentResultSchema);

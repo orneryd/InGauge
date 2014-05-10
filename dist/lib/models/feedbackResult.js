@@ -1,14 +1,17 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    studentSchema = require('./student'),
     Schema = mongoose.Schema;
     
 /**
  * Thing Schema
  */
 var feedbackResult = new Schema({
-    student: studentSchema,
+    accountId: String,
+    userId: String,
+    sessionId: String,
+    feedbackId: String,
+    student: String,
     text: String
 });
 

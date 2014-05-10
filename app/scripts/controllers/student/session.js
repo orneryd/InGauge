@@ -8,6 +8,7 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
     var getSession = function(){
         $http.get('/api/session/' + $routeParams.sessionId).success(function(res) {
             $scope.session = res.results;
+            $io.emit('subscribe', $scope.session._id);
         });
     };
     
@@ -36,16 +37,16 @@ function ($scope, $http, $io, $timeout, $routeParams, $location, $window, $ident
         });
     };
 
-    $io.on("sessionstarted", getSession);
+    $io.on("session:started", getSession);
 
-    $io.on("sessionclosed", function(){
+    $io.on("session:closed", function(){
         $scope.session = null;
     });
 
-    $io.on('assessmentinstancestarted', function(id){
+    $io.on('assessmentinstance:started', function(id){
         $location.path("/student/session/" + $routeParams.sessionId + "/assessment/" + id);
     });
-    $io.on('feedbackstarted', function(id){
+    $io.on('feedback:started', function(id){
         //TODO: route to feedback
     });
 

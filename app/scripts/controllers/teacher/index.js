@@ -1,4 +1,4 @@
-angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$location", function ($scope, $http, $location) {
+angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$location", "$io", function ($scope, $http, $location, $io) {
     $scope.sessions = null;
     $scope.newSessionTitle = null;
     var getSessions = function(){
@@ -10,6 +10,7 @@ angular.module('inGuage').controller('TeacherIndexCtrl', ["$scope", "$http", "$l
     $scope.start = function(session) {
         $http.post("/api/session/" + session._id + "/start").success(function(){
             $location.path("/teacher/session/" + session._id);
+            $io.emit('subscribe', session._id);
         });
     };
     
